@@ -1,0 +1,20 @@
+# Maven build kimenet (lefordított osztályok, teszteredmények, riportok)
+target/
+
+# Az allure-maven plugin által letöltött Allure parancssori eszköz
+.allure/
+
+# Eclipse munkaterület- és buildfájlok
+# (a .project és a .classpath marad, hogy a projekt importálható legyen)
+.metadata/
+bin/
+.settings/
+
+# IntelliJ IDEA / VS Code
+.idea/
+*.iml
+.vscode/
+
+# Operációs rendszer
+.DS_Store
+Thumbs.db

@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>hu.automation</groupId>
+  <artifactId>openDemoUITeszt_v1</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <properties>
+  	<!-- A forráskód karakterkódolása; az ékezetes kommentek és szövegek miatt fontos,
+  	     különben Linuxon (pl. GitHub Actions) az ékezetek hibásan jelenhetnek meg -->
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<maven.compiler.release>21</maven.compiler.release>
+  	<junit.version>6.1.3</junit.version>
+  </properties>
+
+  <dependencyManagement>
+  	<dependencies>
+  		<!-- A JUnit BOM minden org.junit artifactot ugyanarra a verzióra igazít.
+  		     Enélkül az allure-junit5 a régi junit-platform-launcher 1.10.3-at húzza be,
+  		     ami a 6.x-es engine mellett "OutputDirectoryCreator not available" hibát ad. -->
+  		<dependency>
+  			<groupId>org.junit</groupId>
+  			<artifactId>junit-bom</artifactId>
+  			<version>${junit.version}</version>
+  			<type>pom</type>
+  			<scope>import</scope>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+  	<!-- Source: https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+	<dependency>
+	    <groupId>org.seleniumhq.selenium</groupId>
+	    <artifactId>selenium-java</artifactId>
+	    <version>4.51.0</version>
+	    <scope>compile</scope>
+	</dependency>
+
+	<!-- Source: https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+	<dependency>
+	    <groupId>io.github.bonigarcia</groupId>
+	    <artifactId>webdrivermanager</artifactId>
+	    <version>6.4.0</version>
+	    <scope>compile</scope>
+	</dependency>
+
+  	<!-- Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
+	<dependency>
+	    <groupId>org.junit.jupiter</groupId>
+	    <artifactId>junit-jupiter</artifactId>
+	    <scope>test</scope>
+	</dependency>
+
+	<!-- A tesztfuttató (launcher) is a projekt része, így az Eclipse és a Maven
+	     is ezt használja; verzióját a junit-bom adja -->
+	<dependency>
+	    <groupId>org.junit.platform</groupId>
+	    <artifactId>junit-platform-launcher</artifactId>
+	    <scope>test</scope>
+	</dependency>
+
+	<!-- Allure riport: futás közben automatikusan rögzíti a tesztek eredményét
+	     (a tesztkódon nem kell hozzá változtatni).
+	     Source: https://mvnrepository.com/artifact/io.qameta.allure/allure-junit5 -->
+	<dependency>
+	    <groupId>io.qameta.allure</groupId>
+	    <artifactId>allure-junit5</artifactId>
+	    <version>2.29.1</version>
+	    <scope>test</scope>
+	</dependency>
+
+  </dependencies>
+
+  <build>
+  	<plugins>
+  		<!-- A tesztek futtatója (mvn test). A verziót rögzítjük, mert a Maven régebbi
+  		     alapértelmezett verziója a JUnit 5/6 teszteket nem találja meg.
+  		     Az eredményt a target/surefire-reports mappába írja; ebből készül
+  		     a GitHub Actions tesztriportja. -->
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-surefire-plugin</artifactId>
+  			<version>3.5.2</version>
+  			<configuration>
+  				<systemPropertyVariables>
+  					<!-- Az Allure ide írja a nyers eredményeket; az allure-maven plugin
+  					     innen készíti a riportot -->
+  					<allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+  				</systemPropertyVariables>
+  			</configuration>
+  		</plugin>
+
+  		<!-- Allure riport készítése a target/allure-results eredményekből:
+  		     mvn allure:serve   → elkészíti és megnyitja a böngészőben
+  		     mvn allure:report  → elkészíti a target/site/allure-maven-plugin mappába -->
+  		<plugin>
+  			<groupId>io.qameta.allure</groupId>
+  			<artifactId>allure-maven</artifactId>
+  			<version>2.12.0</version>
+  		</plugin>
+  	</plugins>
+  </build>
+</project>
