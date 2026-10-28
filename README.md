@@ -2,8 +2,10 @@
 
 Selenium WebDriver + JUnit alapú, automatizált felhasználói felület (UI) tesztek a
 [Practice Software Testing](https://practicesoftwaretesting.com/) demó webáruházhoz.
-A tesztek helyben (Eclipse-ből vagy parancssorból) és GitHub Actions-ben is futtathatók,
-az eredményekről Allure riport készül.
+A tesztek helyben (Eclipse-ből vagy parancssorból) futtathatók, az eredményekről Allure
+riport készül. GitHub Actions workflow is tartozik a projekthez, de ott a tesztelt oldal
+Cloudflare-védelme miatt a tesztek nem érik el az oldalt
+(részletek: [Ismert korlát](#ismert-korlát-cloudflare-védelem)).
 
 ## Használt technológiák
 
@@ -149,9 +151,11 @@ A tesztek GitHub Actions-ben is futnak. A workflow: [`.github/workflows/ui-tests
 
 **Mit csinál:**
 
-1. Java 21-et telepít, és lefuttatja a teszteket (`mvn clean test -Dslowmo=0`).
-2. A futás oldalán összesítő táblázatot készít a tesztek eredményéről (JUnit riport).
-3. Elkészíti az Allure riportot, és `allure-report` néven letölthető artifactként elmenti
+1. Java 21-et telepít, és ellenőrzi, hogy a GitHub gépe eléri-e a tesztelt oldalt
+   (HTTP státusz, oldalcím; lásd lent, [Ismert korlát](#ismert-korlát-cloudflare-védelem)).
+2. Lefuttatja a teszteket (`mvn clean test -Dslowmo=0`).
+3. A futás oldalán összesítő táblázatot készít a tesztek eredményéről (JUnit riport).
+4. Elkészíti az Allure riportot, és `allure-report` néven letölthető artifactként elmenti
    (14 napig érhető el).
 
 A CI környezetben nincs képernyő, ezért a `BaseTest` a `CI` környezeti változóból
@@ -166,8 +170,39 @@ paranccsal vagy egy helyi webszerverrel megnyitni, mert fájlból megnyitva a b�
 nem tölti be az adatokat.
 
 Ha bármelyik teszt elbukik, a futás piros lesz, de a riportok ettől még elkészülnek.
-Mivel a `DeleteDataTest` az ismert hiba miatt jelenleg elbukik, a futás addig piros marad,
-amíg az alkalmazás hibáját nem javítják.
+
+### Ismert korlát: Cloudflare-védelem
+
+**GitHub Actions-ben jelenleg minden teszt elbukik, de nem a tesztek hibája miatt.**
+
+A tesztelt oldal (practicesoftwaretesting.com) Cloudflare védelem mögött van, amely a
+GitHub Actions adatközponti gépeiről érkező kéréseket automatizált forgalomnak tekinti.
+Ezekre a valódi oldal helyett egy botellenőrző oldalt ad vissza, így a böngészőben meg sem
+jelenik az alkalmazás, és a tesztek már az első lépésnél (pl. a *Sign in* gomb keresésénél)
+elbuknak.
+
+Ezt a workflow *„Tesztelt oldal elérhetőségének ellenőrzése”* lépése igazolja:
+
+| Cím | Eredmény GitHub Actions-ből |
+|---|---|
+| `https://practicesoftwaretesting.com/` | **403**, `cf-mitigated: challenge`, oldalcím: *„Just a moment...”* |
+| `https://api.practicesoftwaretesting.com/products` | **200**, rendes terméklista (az API nincs a védelem mögött) |
+
+Saját gépről ugyanez az oldal 200-as státusszal, rendesen betölt, és a tesztek
+– ugyanazokkal a headless beállításokkal is (`CI=true`) – lefutnak. A teszteket ezért
+**helyben** kell futtatni (lásd: [Futtatás helyben](#futtatás-helyben)); a GitHub Actions
+workflow a CI-beállítás bemutatására és a korlát dokumentálására szolgál.
+
+A Cloudflare ellenőrzését a tesztek szándékosan nem kerülik meg. Lehetséges megoldások,
+ha a CI-futás a jövőben szükséges lenne:
+
+- **Self-hosted runner:** a workflow egy saját gépen fut (onnan az oldal elérhető).
+- **Saját alkalmazáspéldány:** a Practice Software Testing nyílt forrású, Dockerrel a
+  workflow-n belül is elindítható; ehhez a tesztekben az oldal címét konfigurálhatóvá
+  kellene tenni.
+
+A `DeleteDataTest` ettől függetlenül, az [ismert alkalmazáshiba](#ismert-hiba) miatt
+helyben is elbukik.
 
 ## Felhasznált tesztadatok
 
