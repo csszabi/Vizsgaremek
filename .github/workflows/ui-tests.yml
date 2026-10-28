@@ -40,6 +40,19 @@ jobs:
       # A Chrome az ubuntu-latest gépen előre telepítve van,
       # a hozzá illő ChromeDriver-t a WebDriverManager tölti le.
 
+      # Diagnosztika: eléri-e a GitHub gépe a tesztelt oldalt és az API-ját.
+      # Ha a válasz 403 vagy a cím "Just a moment...", a Cloudflare blokkolja a kérést.
+      - name: Tesztelt oldal elérhetőségének ellenőrzése
+        run: |
+          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+          for url in https://practicesoftwaretesting.com/ https://api.practicesoftwaretesting.com/products; do
+            echo "=== $url"
+            curl -s -A "$UA" -o page.html -D headers.txt -w "HTTP státusz: %{http_code}\n" "$url" || true
+            grep -i -E "^(server|cf-mitigated|cf-ray):" headers.txt || true
+            echo "Oldal címe: $(grep -o -i '<title>[^<]*</title>' page.html | head -1)"
+            head -c 300 page.html; echo; echo
+          done
+
       # -Dslowmo=0: CI-ben nincs, aki nézze, ezért kikapcsoljuk a bemutató módú lassítást.
       # -Dmaven.test.failure.ignore=true: bukott teszt esetén se álljon meg a build,
       #   hogy a riportok elkészüljenek. A futást a JUnit riport lépés teszi pirossá.
