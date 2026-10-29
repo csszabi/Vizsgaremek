@@ -96,6 +96,12 @@ kategória még szerepel.
   e-mail cím, egyedi kategórianevek), így egymást és más felhasználókat nem zavarják.
 - **A demóoldal tesztadatokat halmoz fel.** A felvett tesztkategóriák az oldalon maradnak,
   amíg az adatbázis vissza nem áll.
+- **A számlaletöltés teszt a demóoldal állapotától függően bukhat.** A PDF-et a szerver
+  a háttérben készíti el, és nem minden számlához készül el (pl. a demóoldal adatbázisának
+  visszaállítása után). A teszt ezért az első 5 számlát sorban megnézi, és az első olyat
+  tölti le, amelyikhez a PDF már elkészült. Ha egyiknél sem érhető el a PDF, a teszt
+  elbukik; ilyenkor a hiba a demóoldal pillanatnyi állapotából adódik, nem a letöltés
+  funkcióból, ezért a teszt később újrafuttatva várhatóan sikeres lesz.
 
 ## 7. Konklúzió és javaslatok
 
