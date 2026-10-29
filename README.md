@@ -193,13 +193,7 @@ Saját gépről ugyanez az oldal 200-as státusszal, rendesen betölt, és a tes
 **helyben** kell futtatni (lásd: [Futtatás helyben](#futtatás-helyben)); a GitHub Actions
 workflow a CI-beállítás bemutatására és a korlát dokumentálására szolgál.
 
-A Cloudflare ellenőrzését a tesztek szándékosan nem kerülik meg. Lehetséges megoldások,
-ha a CI-futás a jövőben szükséges lenne:
-
-- **Self-hosted runner:** a workflow egy saját gépen fut (onnan az oldal elérhető).
-- **Saját alkalmazáspéldány:** a Practice Software Testing nyílt forrású, Dockerrel a
-  workflow-n belül is elindítható; ehhez a tesztekben az oldal címét konfigurálhatóvá
-  kellene tenni.
+A Cloudflare ellenőrzését a tesztek szándékosan nem kerülik meg. 
 
 A `DeleteDataTest` ettől függetlenül, az [ismert alkalmazáshiba](#ismert-hiba) miatt
 helyben is elbukik.
