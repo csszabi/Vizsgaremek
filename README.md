@@ -27,7 +27,7 @@ src/test/java/
 │   └── BaseTest  közös ősosztály: böngésző indítása / bezárása
 ├── pages/        Page Object osztályok (hogyan érjük el az oldal elemeit)
 │   └── BasePage  közös ősosztály: várakozások, kattintás, gépelés
-└── utils/        segédosztályok (CSV olvasás, Cloudflare ellenőrző oldal kivárása)
+└── utils/        segédosztályok (Cloudflare ellenőrző oldal kivárása)
 
 src/test/resources/
 ├── categories.csv            tesztadatok az adatvezérelt teszthez
@@ -46,20 +46,26 @@ változik, csak egy helyen kell javítani.
 
 ## Tesztesetek
 
-A tesztosztályok az alábbi sorrendben futnak (`@Order`):
+A tesztosztályok az alábbi sorrendben futnak (`@Order`). A 10 osztályban összesen
+11 teszteset van; mindegyik TC azonosítót kapott, amely a tesztmetódus Javadocjában és
+a `@DisplayName`-ben (így az Eclipse JUnit nézetében és az Allure riportban) is látszik:
 
-| # | Tesztosztály | Mit ellenőriz |
-|---|---|---|
-| 1 | `RegistrationSuccessTest` | Új vásárlói fiók regisztrációja egyedi e-mail címmel |
-| 2 | `LogonSuccessTest` | Admin bejelentkezés, utána betölt a Dashboard |
-| 3 | `LogOffSuccessTest` | Kijelentkezés, utána a login oldal jelenik meg |
-| 4 | `PagingProductsTest` | Terméklista lapozása az 1–5. oldal között és vissza |
-| 5 | `DownloadDataTest` | Számla PDF letöltése vásárlói fiókkal |
-| 6 | `AddDataTest` | Új kategória felvétele |
-| 7 | `ModifyDataTest` | Kategória nevének és slugjának módosítása |
-| 8 | `DeleteDataTest` | Kategória törlése |
-| 9 | `RepeatedCategoryEntryTest` | Több kategória felvétele egymás után CSV fájlból (adatvezérelt) |
-| 10 | `CategoryListTest` | A kategórialista megjelenik, benne a Hand Tools kategóriával |
+| # | Tesztosztály | TC | Mit ellenőriz |
+|---|---|---|---|
+| 1 | `RegistrationSuccessTest` | TC-01 | Új vásárlói fiók regisztrációja egyedi e-mail címmel |
+| 2 | `LogonSuccessTest` | TC-02 | Admin bejelentkezés, utána betölt a Dashboard |
+| | | TC-02.1 | Vásárlói bejelentkezés, utána betölt a My account oldal |
+| 3 | `LogOffSuccessTest` | TC-03 | Kijelentkezés, utána a login oldal jelenik meg |
+| 4 | `PagingProductsTest` | TC-04 | Terméklista lapozása az 1–5. oldal között és vissza |
+| 5 | `DownloadDataTest` | TC-05 | Számla PDF letöltése vásárlói fiókkal |
+| 6 | `AddDataTest` | TC-06 | Új kategória felvétele |
+| 7 | `ModifyDataTest` | TC-07 | Kategória nevének és slugjának módosítása |
+| 8 | `DeleteDataTest` | TC-08 | Kategória törlése |
+| 9 | `RepeatedCategoryEntryTest` | TC-09 | Több kategória felvétele egymás után CSV fájlból (adatvezérelt) |
+| 10 | `CategoryListTest` | TC-10 | A kategórialista megjelenik, benne a Hand Tools kategóriával |
+
+Minden teszteset részletes leírása (tesztfeltétel, előfeltételek, tesztlépések, elvárt
+eredmény) a tesztmetódus Javadocjában található.
 
 Minden teszt önálló, nem függ más tesztek eredményétől. Az ütközések elkerülése
 érdekében a tesztek egyedi adatokat használnak (időbélyeget tartalmazó e-mail cím
