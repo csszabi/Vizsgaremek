@@ -11,17 +11,28 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Az összes Page Object közös ősosztálya.
- * 
- * A Page Object Model (POM) mintában minden oldalhoz (vagy funkcióhoz) tartozik egy
+ *
+ * <p>A Page Object Model (POM) mintában minden oldalhoz (vagy funkcióhoz) tartozik egy
  * osztály, amely a lokátorokat és az oldalon végezhető műveleteket tartalmazza.
- * 
- * Ez az osztály azért jött létre, hogy az ismétlődő Selenium-hívások (elem keresése,
+ *
+ * <p><b>Miért jött létre?:</b> hogy az ismétlődő Selenium-hívások (elem keresése,
  * kattintás, gépelés, választás) egy helyen legyenek, és a leszármazott oldalak
  * ezeket használják.
- * 
- * Bemutató mód (lassítás): a kattintások, gépelések és választások előtt a
+ *
+ * <p><b>Keretrendszer-funkciói:</b>
+ * <ul>
+ *   <li>{@link #find(By)} – elem keresése várakozás nélkül</li>
+ *   <li>{@link #click(By)}, {@link #waitAndClick(By)} – kattintás (azonnal, illetve
+ *       a kattinthatóság megvárásával)</li>
+ *   <li>{@link #type(By, String)} – gépelés a mező láthatóságának megvárásával</li>
+ *   <li>{@link #selectByText(By, String)} – választás legördülő listából</li>
+ *   <li>{@link #getText(By)}, {@link #clear(By)} – szöveg lekérdezése, mező ürítése</li>
+ *   <li>{@link #pause()} – bemutató módú lassítás</li>
+ * </ul>
+ *
+ * <p><b>Bemutató mód (lassítás):</b> a kattintások, gépelések és választások előtt a
  * {@link #pause()} metódus várakozik, hogy a futás szemmel követhető legyen.
- * Alapértéken 0, az indításnál kell beállítani a sebességet.
+ * Alapértéke 0 (nincs lassítás); indításkor a -Dslowmo=... paraméterrel kapcsolható be.
  */
 public class BasePage {
 
@@ -30,7 +41,7 @@ public class BasePage {
 	 * választás előtt. Az értéket a "slowmo" indítási paraméterből olvassa
 	 * (pl. -Dslowmo=800); ha nincs megadva, 0, vagyis teljes sebességgel fut.
 	 */
-	protected static final long SLOW_MO_MS = Long.getLong("slowmo", 0);
+	protected static final int SLOW_MO_MS = Integer.getInteger("slowmo", 0);
 
 	/** A teszt által létrehozott böngésző-példány, amelyet minden oldal közösen használ. */
 	protected WebDriver driver;
@@ -135,8 +146,8 @@ public class BasePage {
 	}
 
 	/**
-	 * Kiüríti a beviteli mezőt. 
-	 * 
+	 * Kiüríti a beviteli mezőt a Selenium {@code clear()} hívásával.
+	 *
 	 * @param locator a beviteli mező lokátora
 	 */
 	protected void clear(By locator) {

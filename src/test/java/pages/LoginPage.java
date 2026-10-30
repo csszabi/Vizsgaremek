@@ -9,13 +9,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Page Object a bejelentkezéshez a Practice Software Testing oldalon.
- * <
- * Lefedett folyamat: kezdőoldal → Sign in → e-mail és jelszó → Login.
- * Sikeres bejelentkezés után az oldal teljes újratöltéssel átirányít:
- * admin felhasználót a /admin/dashboard, vásárlót az /account oldalra.
- * 
- * A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
- * történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
+ *
+ * <p><b>Mit modellez:</b> a bejelentkezési folyamatot. Kezdőoldal → Sign in →
+ * e-mail és jelszó → Login. Sikeres bejelentkezés után az oldal teljes újratöltéssel
+ * átirányít: admin felhasználót a /admin/dashboard, vásárlót az /account oldalra.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #login(String, String)} – bejelentkezés és az átirányítás megvárása</li>
+ * </ul>
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class LoginPage extends BasePage {
 

@@ -16,25 +16,48 @@ import pages.LogoffPage;
 
 /**
  * Sikeres kijelentkezés tesztje a Practice Software Testing oldalon.
- * 
- * Mit tesztel: egy bejelentkezett admin ki tud-e jelentkezni a felhasználói
- * 				menüből, és ezután a login oldalra kerül-e.
- * 
- * Miért jött létre: a bejelentkezés ({@link LogonSuccessTest}) párja; azt
- * 					 ellenőrzi, hogy a munkamenet valóban véget ér.
- * 
- * A böngésző indítását és bezárását a {@link BaseTest} végzi.
+ *
+ * <p><b>Mit tesztel?:</b> egy bejelentkezett admin ki tud-e jelentkezni a felhasználói
+ * menüből, és ezután a login oldalra kerül-e.
+ *
+ * <p><b>Miért jött létre?:</b> a bejelentkezés ({@link LogonSuccessTest}) párja; azt
+ * ellenőrzi, hogy a munkamenet valóban véget ér.
+ *
+ * <p><b>Előfeltételek:</b>
+ * <ul>
+ *   <li>a tesztelt oldal elérhető, a felhasználó nincs bejelentkezve</li>
+ *   <li>létezik a demóoldal beépített admin fiókja (admin@practicesoftwaretesting.com)</li>
+ * </ul>
+ *
+ * <p>A böngésző indítását és bezárását a {@link BaseTest} végzi.
  */
 @Order(3)
 @DisplayName("Kijelentkezés")
 class LogOffSuccessTest extends BaseTest {
 
 	/**
-	 * Bejelentkezik, megvárja a Dashboardot, kijelentkezik, majd ellenőrzi,
-	 * hogy a login oldal nyílt meg.
+	 * <b>TC-03 – Kijelentkezés</b>
+	 *
+	 * <p><b>Tesztfeltétel:</b> bejelentkezett felhasználó a felhasználói menüből ki tud
+	 * jelentkezni, és ezzel a munkamenete véget ér.
+	 *
+	 * <p><b>Előfeltételek:</b>
+	 * <ul>
+	 *   <li>a kezdőoldal betöltött, a felhasználó nincs bejelentkezve</li>
+	 *   <li>létezik az admin fiók (admin@practicesoftwaretesting.com / welcome01)</li>
+	 * </ul>
+	 *
+	 * <p><b>Tesztlépések:</b>
+	 * <ol>
+	 *   <li>Bejelentkezés adminként (Sign in → e-mail, jelszó → Login)</li>
+	 *   <li>A Dashboard betöltésének megvárása</li>
+	 *   <li>Jobb felső felhasználói menü → Sign out</li>
+	 * </ol>
+	 *
+	 * <p><b>Elvárt eredmény:</b> 10 másodpercen belül a login oldal (/auth/login) nyílik meg.
 	 */
 	@Test
-	@DisplayName("Kijelentkezés után a login oldal jelenik meg")
+	@DisplayName("TC-03: Kijelentkezés után a login oldal jelenik meg")
 	void logOffSuccessTest() {
 
 		// 1. Bejelentkezés

@@ -10,15 +10,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Page Object az új kategória felvételéhez a Practice Software Testing oldal
  * admin felületén.
- * 
- * Lefedett folyamat: bejelentkezés adminként → menü → Categories → Add Category →
- * űrlap kitöltése (szülőkategória, név, slug) → Save → "Category saved!" üzenet.
- * 
- * A {@link #login}, {@link #openCategories} és {@link #createCategory} lépések
+ *
+ * <p><b>Mit modellez:</b> az admin kategóriakezelés felvételi folyamatát.
+ * Bejelentkezés adminként → menü → Categories → Add Category → űrlap kitöltése
+ * (szülőkategória, név, slug) → Save → "Category saved!" üzenet.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #addData(String, String, String, String)} – a teljes folyamat egyben</li>
+ *   <li>{@link #login(String, String)} – bejelentkezés</li>
+ *   <li>{@link #openCategories()} – a Categories lista megnyitása</li>
+ *   <li>{@link #createCategory(String, String)} – új kategória felvétele és mentése</li>
+ *   <li>{@link #isCategorySavedDisplayed()} – a sikerüzenet ellenőrzése</li>
+ * </ul>
+ *
+ * <p>A {@link #login}, {@link #openCategories} és {@link #createCategory} lépések
  * külön is hívhatók, így más tesztek (pl. módosítás, törlés) ezzel az osztállyal
  * készíthetik elő a saját tesztadatukat.
- * 
- * A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
  * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class AddDataPage extends BasePage {

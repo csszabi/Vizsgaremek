@@ -10,11 +10,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Page Object a kategórialista megtekintéséhez a Practice Software Testing
  * admin felületén.
- * 
- * Lefedett folyamat: bejelentkezés adminként → menü → Categories → a lista
- * (Id, Parent_id, Name, Slug oszlopok) betöltése.
- * 
- * A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
+ *
+ * <p><b>Mit modellez:</b> az admin Categories listát. Bejelentkezés adminként →
+ * menü → Categories → a lista (Id, Parent_id, Name, Slug oszlopok) betöltése.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #openCategoryList(String, String)} – bejelentkezés és a lista megnyitása</li>
+ *   <li>{@link #isCategoryListDisplayed()} – ellenőrzi, hogy a lista nem üres</li>
+ *   <li>{@link #containsCategory(String)} – ellenőrzi, hogy egy kategória szerepel-e a listában</li>
+ * </ul>
+ *
+ * <p>A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
  * történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class CategoryListPage extends BasePage {

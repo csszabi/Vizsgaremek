@@ -5,12 +5,17 @@ import org.openqa.selenium.WebDriver;
 
 /**
  * Page Object a kijelentkezéshez a Practice Software Testing oldalon.
- * 
- * Lefedett folyamat: a jobb felső felhasználói menü (nav-menu) → Sign out.
- * Kijelentkezés után az oldal újratölt, és mivel az admin/account oldalak
+ *
+ * <p><b>Mit modellez:</b> a jobb felső felhasználói menüt (nav-menu) és annak Sign out
+ * pontját. Kijelentkezés után az oldal újratölt, és mivel az admin/account oldalak
  * bejelentkezést igényelnek, a login oldalra (/auth/login) kerülünk.
- * 
- * A kattintások a {@link BasePage} segédmetódusán keresztül történnek, így
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #logoff()} – kijelentkezés a felhasználói menüből</li>
+ * </ul>
+ *
+ * <p>A kattintások a {@link BasePage} segédmetódusán keresztül történnek, így
  * bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class LogoffPage extends BasePage {

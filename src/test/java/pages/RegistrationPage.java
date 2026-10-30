@@ -11,22 +11,32 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Page Object az új vásárlói fiók regisztrációjához a Practice Software Testing oldalon.
- * 
- * Lefedett folyamat: kezdőoldal → Sign in → Register your account → űrlap kitöltése
- * → Register. Sikeres regisztráció után az oldal a login oldalra (/auth/login) irányít.
- * 
- * Az űrlap szabályai (az oldal forráskódja alapján):
- * 
- * születési dátum: ÉÉÉÉ-HH-NN formátum
- * telefonszám: csak számjegyek
- * jelszó: min. 8 karakter, kis- és nagybetű, szám és speciális karakter
- * e-mail cím: egyedi, már regisztrált címmel a regisztráció hibát ad
- * 
- * Ország + irányítószám + házszám megadása után az oldal automatikusan kitöltheti
+ *
+ * <p><b>Mit modellez:</b> a regisztrációs folyamatot és űrlapot.
+ * Kezdőoldal → Sign in → Register your account → űrlap kitöltése → Register.
+ * Sikeres regisztráció után az oldal a login oldalra (/auth/login) irányít.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #register} – az űrlap kitöltése és elküldése</li>
+ *   <li>{@link #isRegistrationSuccessful()} – a sikeres regisztráció ellenőrzése</li>
+ *   <li>{@link #getRegistrationError()} – az oldal hibaüzenetének lekérdezése</li>
+ * </ul>
+ *
+ * <p><b>Az űrlap szabályai</b>:
+ * <ul>
+ *   <li>születési dátum: ÉÉÉÉ-HH-NN formátum</li>
+ *   <li>telefonszám: csak számjegyek</li>
+ *   <li>jelszó: min. 8 karakter, kis- és nagybetű, szám és speciális karakter</li>
+ *   <li>e-mail cím: egyedi, már regisztrált címmel a regisztráció hibát ad</li>
+ * </ul>
+ *
+ * <p>Ország, irányítószám és házszám megadása után az oldal automatikusan kitöltheti
  * az utca, város és megye mezőket (cím-lekérdezés), ezért ezeket csak a lekérdezés
  * után írjuk felül.
  *
- * A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
  * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class RegistrationPage extends BasePage {
@@ -66,15 +76,25 @@ public class RegistrationPage extends BasePage {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	/** Megnyitja az oldal kezdőlapját. */
+	/**
+	 * Megnyitja a tesztelt oldal kezdőlapját; innen indul a regisztráció.
+	 */
 	public void open() {
 
 		driver.get("https://practicesoftwaretesting.com/");
 	}
 
 	/**
-	 * Kitölti és elküldi a regisztrációs űrlapot. Országnak mindig Magyarországot választja.
-	 * A kezdőoldalról, kijelentkezett állapotból kell indítani.
+	 * Kitölti és elküldi a regisztrációs űrlapot.
+	 *
+	 * <p>A kezdőoldalról, kijelentkezett állapotból kell indítani: a Sign in, majd a
+	 * Register your account linkkel nyitja meg az űrlapot. Országnak mindig
+	 * Magyarországot ("Hungary") választja. Az irányítószám és a házszám után megvárja
+	 * az automatikus cím-lekérdezést, és csak utána írja be az utcát, várost, megyét,
+	 * hogy a lekérdezés ne írja felül őket.
+	 *
+	 * <p>Az eredményt az {@link #isRegistrationSuccessful()} és a
+	 * {@link #getRegistrationError()} metódusokkal lehet ellenőrizni.
 	 *
 	 * @param firstName keresztnév
 	 * @param lastName vezetéknév
@@ -85,8 +105,8 @@ public class RegistrationPage extends BasePage {
 	 * @param city város
 	 * @param state megye
 	 * @param phone telefonszám, csak számjegyek
-	 * @param email e-mail cím, egyedinek kell lennie
-	 * @param password jelszó a fenti szabályok szerint
+	 * @param email e-mail cím; egyedinek kell lennie
+	 * @param password jelszó az osztály leírásában szereplő szabályok szerint
 	 */
 	public void register(String firstName, String lastName, String dob, String postalCode, String houseNumber, String street, String city, String state, String phone, String email, String password) {
 
@@ -119,7 +139,7 @@ public class RegistrationPage extends BasePage {
 
 	/**
 	 * Ellenőrzi, hogy a regisztráció sikeres volt-e, vagyis az oldal átirányított
-	 * a login oldalra.
+	 * a login oldalra (/auth/login). A {@link #register} után kell hívni.
 	 *
 	 * @return true, ha 10 mp-en belül a login oldal nyílt meg; különben false
 	 */
@@ -133,19 +153,18 @@ public class RegistrationPage extends BasePage {
 	}
 
 	/**
-	 * Visszaadja a regisztrációs hibaüzenetet, ha van.
+	 * Visszaadja a regisztrációs űrlap alatt megjelenő hibaüzenetet
+	 * (pl. "Email is already in use."). Sikertelen regisztráció esetén a hiba okának
+	 * kiírására szolgál.
 	 *
-	 * @return a hibaüzenet szövege, vagy üres szöveg, ha nincs hiba
+	 * @return a hibaüzenet szövege, vagy üres szöveg, ha nincs hibaüzenet
 	 */
 	public String getRegistrationError() {
 		return driver.findElements(registerError).isEmpty() ? "" : getText(registerError);
 	}
 
-	/**
-	 * Megvárja a cím-lekérdezés végét. A lekérdezés 300 ms késleltetéssel indul,
-	 * ezért először rövid ideig várunk a jelzés megjelenésére (ha nem jelenik meg,
-	 * az sem hiba), majd az eltűnésére.
-	 */
+	
+	//Megvárja az irányítószám alapján induló automatikus cím-lekérdezés végét.
 	private void waitForPostcodeLookup() {
 		try {
 			new WebDriverWait(driver, Duration.ofSeconds(2))
@@ -157,8 +176,16 @@ public class RegistrationPage extends BasePage {
 	}
 
 	/**
-	 * Lecseréli egy beviteli mező tartalmát.
-	 * Közvetlenül a sendKeys()-t hívja, ezért itt külön kell a bemutató módú pause().
+	 * Lecseréli egy beviteli mező tartalmát: kijelöli a meglévő szöveget,törli, 
+	 * majd beírja az újat.
+	 *
+	 * <p>A cím-lekérdezés által kitöltött mezőknél kell, mert a sima gépelés a meglévő
+	 * szöveg mögé írna. A {@code clear()} nem jó, mert nem vált ki input eseményt,
+	 * így az űrlap a régi értéket tartaná meg. A sendKeys()-t közvetlenül
+	 * hívja, ezért itt külön kell a bemutató módú {@link #pause()}.
+	 *
+	 * @param locator a beviteli mező lokátora
+	 * @param text az új szöveg
 	 */
 	private void replaceText(By locator, String text) {
 		pause();

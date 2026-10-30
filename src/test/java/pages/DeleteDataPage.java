@@ -9,16 +9,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Page Object egy kategória törléséhez a Practice Software Testing admin felületén.
- * 
- * Lefedett folyamat: menü → Categories → a kategória sorában Delete →
- * "Category deleted." toast üzenet → a sor eltűnik a listából.
- * 
- * Megjegyzés: az oldal nem kér megerősítést törlés előtt. Olyan kategória, amelyhez
- * termék tartozik, nem törölhető (a szerver hibát ad), ezért a teszt mindig
+ *
+ * <p><b>Mit modellez:</b> a kategórialista Delete funkcióját. Menü → Categories →
+ * a kategória sorában Delete → "Category deleted." toast üzenet → a sor eltűnik a listából.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #deleteData(String, String, String)} – a teljes folyamat bejelentkezéssel együtt</li>
+ *   <li>{@link #deleteCategory(String)} – egy kategória törlése (már bejelentkezett adminnal)</li>
+ *   <li>{@link #isDeleteSuccessful()} – a "Category deleted." üzenet ellenőrzése</li>
+ *   <li>{@link #isDeleted(String)} – ellenőrzi, hogy a sor eltűnt-e a listából</li>
+ * </ul>
+ *
+ * <p><b>Megjegyzés:</b> az oldal nem kér megerősítést törlés előtt. Olyan kategória,
+ * amelyhez termék tartozik, nem törölhető (a szerver hibát ad), ezért a teszt mindig
  * saját, frissen létrehozott kategóriát töröl.
- * 
- * A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
- * történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class DeleteDataPage extends BasePage {
 
@@ -52,8 +61,7 @@ public class DeleteDataPage extends BasePage {
 	private By deleteButton(String categoryName) {
 		// //tr[...]                          : az a táblázatsor,
 	    // .//td[normalize-space()='...']     : amelyben van egy cella, aminek a szövege pontosan categoryName,
-	    // //button[contains(@data-test, ...)]: és azon a soron belül a Delete gomb
-	    //                                      (a data-test értéke "category-delete-{id}", ezért elég az elejére illeszteni)
+	    // //button[contains(@data-test, ...)]: és azon a soron belül a Delete gomb (a data-test értéke "category-delete-{id}", ezért elég az elejére illeszteni)
 	    return By.xpath(
 	        "//tr[.//td[normalize-space()='" + categoryName + "']]"
 	        + "//button[contains(@data-test, 'category-delete-')]"
@@ -137,10 +145,10 @@ public class DeleteDataPage extends BasePage {
 	/**
 	 * Ellenőrzi, hogy a kategória sora eltűnt-e a listából (törlés után az oldal
 	 * újratölti a listát).
-	 * 
-	 * Ismert hiba az alkalmazásban: az újratöltött lista kb. 2 percig a böngésző
+	 *
+	 * <p>Ismert hiba az alkalmazásban: az újratöltött lista kb. 2 percig a böngésző
 	 * gyorsítótárából jön, ezért a törölt sor még látszik, és ez a metódus false-t ad.
-	 * Lásd: DeleteDataTest és a README "Ismert hibák" része.
+	 * Lásd: DeleteDataTest és a README "Ismert hiba" része.
 	 *
 	 * @param categoryName a törölt kategória neve vagy slugja
 	 * @return true, ha a sor 10 mp-en belül eltűnt; különben false

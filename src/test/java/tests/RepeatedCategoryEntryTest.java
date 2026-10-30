@@ -18,32 +18,62 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Ismételt (adatvezérelt) kategória-felvitel tesztje a Practice Software Testing
  * admin felületén.
- * 
- * Mit tesztel?: egy CSV fájlban megadott több kategóriát egymás után fel lehet-e
- *               venni, és mindegyik mentése után megjelenik-e a "Category saved!" üzenet.
- * 
- * Miért jött létre?: az ismétlődő adatbevitel automatizálására és annak
- * 					  ellenőrzésére, hogy a felület több egymás utáni mentést
- * 					  is helyesen kezel.
- * 
- * Bemenet: src/test/resources/categories.csv, pontosvesszővel elválasztva,
- * fejléc sorral: név;szülőkategória;slug
- * 
- * A slugoknak egyedinek kell lenniük, ezért a teszt minden CSV-beli slug végére
+ *
+ * <p><b>Mit tesztel?:</b> egy CSV fájlban megadott több kategóriát egymás után fel
+ * lehet-e venni, és mindegyik mentése után megjelenik-e a "Category saved!" üzenet.
+ *
+ * <p><b>Miért jött létre?:</b> az ismétlődő adatbevitel automatizálására és annak
+ * ellenőrzésére, hogy a felület több egymás utáni mentést is helyesen kezel.
+ *
+ * <p><b>Előfeltételek:</b>
+ * <ul>
+ *   <li>a tesztelt oldal elérhető, a felhasználó nincs bejelentkezve</li>
+ *   <li>létezik a demóoldal beépített admin fiókja (admin@practicesoftwaretesting.com)</li>
+ *   <li>a src/test/resources/categories.csv fájl létezik: pontosvesszővel elválasztva,
+ *       fejléc sorral (név;szülőkategória;slug)</li>
+ *   <li>a CSV-ben megadott szülőkategóriák léteznek az oldalon</li>
+ * </ul>
+ *
+ * <p>A slugoknak egyedinek kell lenniük, ezért a teszt minden CSV-beli slug végére
  * egy futásonként egyedi utótagot tesz; így a teszt többször is futtatható.
- *  
- * A böngésző indítását és bezárását a {@link BaseTest} végzi.
+ *
+ * <p>A böngésző indítását és bezárását a {@link BaseTest} végzi.
  */
 @Order(9)
 @DisplayName("Kategóriák felvétele CSV-ből")
 public class RepeatedCategoryEntryTest extends BaseTest {
 
     /**
-     * Beolvassa a categories.csv sorait, mindegyikből felvesz egy kategóriát,
-     * és ellenőrzi, hogy az összes mentés sikeres volt.
+     * <b>TC-09 – Több kategória felvétele CSV fájlból</b>
+     *
+     * <p><b>Tesztfeltétel:</b> egy adatfájlban megadott több kategória egymás után, egy
+     * bejelentkezéssel felvehető, és minden mentést az oldal visszaigazol.
+     *
+     * <p><b>Előfeltételek:</b>
+     * <ul>
+     *   <li>a kezdőoldal betöltött, a felhasználó nincs bejelentkezve</li>
+     *   <li>létezik az admin fiók (admin@practicesoftwaretesting.com / welcome01)</li>
+     *   <li>a categories.csv legalább egy adatsort tartalmaz, és a benne szereplő
+     *       szülőkategóriák léteznek</li>
+     * </ul>
+     *
+     * <p><b>Tesztlépések:</b>
+     * <ol>
+     *   <li>Bejelentkezés adminként, majd Menü → Categories</li>
+     *   <li>A categories.csv beolvasása (a fejléc sort és az üres sorokat kihagyja)</li>
+     *   <li>Minden adatsorra: az Add Category űrlap megnyitása, szülőkategória, név és
+     *       slug ("{slug}-{futásazonosító}") megadása, Save, a sikerüzenet megvárása</li>
+     * </ol>
+     *
+     * <p><b>Elvárt eredmény:</b>
+     * <ul>
+     *   <li>a CSV legalább egy adatsort tartalmaz</li>
+     *   <li>minden sor mentése után 10 másodpercen belül megjelenik a "Category saved!"
+     *       üzenet; sikertelen sor esetén a teszt kiírja a hibás kategóriák nevét</li>
+     * </ul>
      */
     @Test
-    @DisplayName("A categories.csv összes kategóriájának felvétele egymás után")
+    @DisplayName("TC-09: A categories.csv összes kategóriájának felvétele egymás után")
     void repeatedCategoryDataTest() throws Exception {
 
         RepeatedCategoryEntryPage page =

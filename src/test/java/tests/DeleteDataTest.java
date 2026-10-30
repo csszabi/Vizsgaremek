@@ -11,24 +11,29 @@ import pages.DeleteDataPage;
 
 /**
  * Adat (kategória) törlésének tesztje a Practice Software Testing admin felületén.
- * 
- * Mit tesztel?: egy admin felhasználó ki tud-e törölni egy kategóriát,
- * 				 megjelenik-e a "Category deleted." üzenet, és eltűnik-e
- * 				 a kategória a listából.
- * 
- * Miért jött létre?: a CRUD-tesztsorozat "Delete" lépése a ({@link AddDataTest}
- * 					  és {@link ModifyDataTest} mellett).
- * 
- * A teszt önálló: előbb létrehozza a saját kategóriáját az {@link AddDataPage}-dzsel,
+ *
+ * <p><b>Mit tesztel?:</b> egy admin felhasználó ki tud-e törölni egy kategóriát,
+ * megjelenik-e a "Category deleted." üzenet, és eltűnik-e a kategória a listából.
+ *
+ * <p><b>Miért jött létre?:</b> a CRUD-tesztsorozat "Delete" lépése.
+ *
+ * <p><b>Előfeltételek:</b>
+ * <ul>
+ *   <li>a tesztelt oldal elérhető, a felhasználó nincs bejelentkezve</li>
+ *   <li>létezik a demóoldal beépített admin fiókja (admin@practicesoftwaretesting.com)</li>
+ *   <li>létezik a "Hand Tools" szülőkategória (a demóoldal alapadatainak része)</li>
+ * </ul>
+ *
+ * <p>A teszt önálló: előbb létrehozza a saját kategóriáját az {@link AddDataPage}-dzsel,
  * és azt törli. Így nem függ a futási sorrendtől, és nem töröl más által
  * létrehozott vagy termékhez kötött kategóriát.
- * 
- * A böngésző indítását, a kezdőoldal megnyitását és a bezárást a {@link BaseTest} végzi.
- * 
- * ISMERT HIBA (az alkalmazásban, nem a tesztben): a teszt jelenleg elbukik
+ *
+ * <p>A böngésző indítását, a kezdőoldal megnyitását és a bezárást a {@link BaseTest} végzi.
+ *
+ * <p><b>ISMERT HIBA</b> (az alkalmazásban, nem a tesztben): a teszt jelenleg elbukik
  * a második ellenőrzésnél ("A kategória sora nem tűnt el a listából!").
  * A törlés sikeres (a "Category deleted." üzenet megjelenik), de törlés után az
- * oldal ugyanarról a címről tölti újra a listát. Emiatt a böngésző kb. 2 percig 
+ * oldal ugyanarról a címről tölti újra a listát. Emiatt a böngésző kb. 2 percig
  * a gyorsítótárból adja vissza a régi listát, amelyben a törölt kategória
  * még szerepel. Felhasználói szemmel ez valódi hiba, ezért az ellenőrzést szándékosan
  * nem kerültem meg.
@@ -38,11 +43,38 @@ import pages.DeleteDataPage;
 class DeleteDataTest extends BaseTest {
 
 	/**
-	 * Létrehoz egy "Automata" kategóriát, kitörli, majd ellenőrzi a toast üzenetet
-	 * és azt, hogy a sor eltűnt a listából.
+	 * <b>TC-08 – Kategória törlése</b>
+	 *
+	 * <p><b>Tesztfeltétel:</b> egy termékhez nem kötött kategória törölhető, a törlést az
+	 * oldal visszaigazolja, és a kategória eltűnik a listából.
+	 *
+	 * <p><b>Előfeltételek:</b>
+	 * <ul>
+	 *   <li>a kezdőoldal betöltött, a felhasználó nincs bejelentkezve</li>
+	 *   <li>létezik az admin fiók (admin@practicesoftwaretesting.com / welcome01)</li>
+	 *   <li>létezik a törlendő, termékhez nem kötött kategória: a teszt az 1–2. lépésben
+	 *       maga hozza létre</li>
+	 * </ul>
+	 *
+	 * <p><b>Tesztlépések:</b>
+	 * <ol>
+	 *   <li>Bejelentkezés adminként (Sign in → e-mail, jelszó → Login)</li>
+	 *   <li>Előkészítés: "Automata" nevű kategória felvétele egyedi sluggal
+	 *       ("teszt-{időbélyeg}") a "Hand Tools" alá, a sikerüzenet ellenőrzése</li>
+	 *   <li>Menü → Categories → a kategória sorában Delete</li>
+	 * </ol>
+	 *
+	 * <p><b>Elvárt eredmény:</b>
+	 * <ul>
+	 *   <li>10 másodpercen belül megjelenik a "Category deleted." üzenet</li>
+	 *   <li>10 másodpercen belül eltűnik a kategória sora a listából</li>
+	 * </ul>
+	 *
+	 * <p>Ismert hiba miatt (lásd az osztály leírását) a második elvárt eredmény jelenleg
+	 * nem teljesül, ezért a teszt elbukik.
 	 */
 	@Test
-	@DisplayName("Kategória törlése, eltűnik a listából (ismert hiba miatt jelenleg elbukik)")
+	@DisplayName("TC-08: Kategória törlése, eltűnik a listából (ismert hiba miatt jelenleg elbukik)")
 	void deleteDataTest () {
 
 		// A teszt maga hozza létre a törlendő kategóriát, így nem függ más teszttől
@@ -60,7 +92,7 @@ class DeleteDataTest extends BaseTest {
 
 		// ISMERT HIBA: ez az ellenőrzés jelenleg elbukik, mert az oldal törlés után
 		// a böngésző gyorsítótárából (max. 2 percig) a régi listát mutatja.
-		// Részletek az osztály leírásában és a README "Ismert hibák" részében.
+		// Részletek az osztály leírásában és a README "Ismert hiba" részében.
 		assertTrue(deleteDataPage.isDeleted(slug), "A kategória sora nem tűnt el a listából!");
 	}
 }

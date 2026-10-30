@@ -13,17 +13,28 @@ import utils.CloudflareWait;
 
 /**
  * Az összes tesztosztály közös ősosztálya.
- * 
- * Azért jött létre, hogy a böngésző indítása és bezárása (setup / teardown) egy
- * helyen legyen, ne kelljen minden tesztosztályban megismételni. Ugyanaz a
+ *
+ * <p><b>Miért jött létre?:</b> hogy a böngésző indítása és bezárása (setup / teardown)
+ * egy helyen legyen, ne kelljen minden tesztosztályban megismételni. Ugyanaz a
  * gondolat, mint a {@code BasePage} a Page Objecteknél.
- * 
- * Két környezetben fut:
- * 
- * Helyben (saját gépen): látható, teljes méretű Chrome ablakban.
- * GitHub Actions-ben: ott nincs képernyő, ezért "headless" (ablak nélküli)
- *  				   módban. A GitHub minden futásnál beállítja a CI környezeti változót,
- *                     ebből ismerjük fel, hogy ott futunk.
+ *
+ * <p><b>Keretrendszer-funkciói:</b>
+ * <ul>
+ *   <li>minden teszt előtt új Chrome-ot indít, és megnyitja a tesztelt oldal kezdőlapját
+ *       ({@link #startBrowser()})</li>
+ *   <li>minden teszt után bezárja a böngészőt ({@link #closeBrowser()})</li>
+ *   <li>összeállítja a Chrome beállításait, amelyeket a leszármazottak kiegészíthetnek
+ *       ({@link #createChromeOptions()})</li>
+ *   <li>felismeri, hogy CI környezetben fut-e ({@link #isRunningOnCi()})</li>
+ * </ul>
+ *
+ * <p><b>Két környezetben fut:</b>
+ * <ul>
+ *   <li><b>Helyben</b> (saját gépen): látható, teljes méretű Chrome ablakban.</li>
+ *   <li><b>GitHub Actions-ben:</b> ott nincs képernyő, ezért "headless" (ablak nélküli)
+ *       módban. A GitHub minden futásnál beállítja a CI környezeti változót, ebből
+ *       ismerjük fel, hogy ott futunk.</li>
+ * </ul>
  */
 public abstract class BaseTest {
 
@@ -35,6 +46,10 @@ public abstract class BaseTest {
 
 	/**
 	 * Minden teszt előtt elindítja a Chrome-ot, és megnyitja a kezdőoldalt.
+	 *
+	 * <p>Helyben teljes méretűre nagyítja az ablakot. A kezdőoldal megnyitása után
+	 * a {@link CloudflareWait} megvárja, amíg a Cloudflare esetleges ellenőrző oldala
+	 * továbbenged (helyben ilyen nincs, ott azonnal továbblép).
 	 * (A leszármazott osztályok saját @BeforeEach metódusai ez után futnak.)
 	 */
 	@BeforeEach

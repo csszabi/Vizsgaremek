@@ -29,6 +29,10 @@ public final class CloudflareWait {
 	}
 
 	/**
+	 * Megnézi, hogy a böngészőben éppen a Cloudflare ellenőrző oldala látszik-e
+	 * (a cím vagy az oldal szövege alapján).
+	 *
+	 * @param driver a teszt böngészője
 	 * @return true, ha a böngészőben éppen a Cloudflare ellenőrző oldala látszik
 	 */
 	public static boolean isChallengePage(WebDriver driver) {
@@ -51,6 +55,7 @@ public final class CloudflareWait {
 	 * Ha az oldal beragad, újratölti. Ha az ellenőrzés a megadott időn belül sem
 	 * ér véget, egyértelmű hibaüzenettel leállítja a tesztet.
 	 *
+	 * @param driver a teszt böngészője
 	 * @param timeout ennyi ideig próbálkozik összesen
 	 */
 	public static void waitForVerification(WebDriver driver, Duration timeout) {

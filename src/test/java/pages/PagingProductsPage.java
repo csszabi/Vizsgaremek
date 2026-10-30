@@ -9,12 +9,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Page Object a kezdőoldali terméklista lapozójához.
- * 
- * A lapozó gombjainak aria-label attribútuma "Page-1", "Page-2" stb., és az
- * aktuális oldal gombját tartalmazó li elem "active" osztályt kap.
- * Bejelentkezés nem kell hozzá.
- * 
- * A kattintások a {@link BasePage} segédmetódusán keresztül történnek, így
+ *
+ * <p><b>Mit modellez:</b> a terméklista alatti lapozót.Bejelentkezés nem kell hozzá.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása a lapozó megvárásával</li>
+ *   <li>{@link #goToPage(int)} – lapozás a megadott oldalra</li>
+ *   <li>{@link #isPageActive(int)} – ellenőrzi, hogy a megadott oldal az aktív-e</li>
+ * </ul>
+ *
+ * <p>A kattintások a {@link BasePage} segédmetódusán keresztül történnek, így
  * bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class PagingProductsPage extends BasePage {
@@ -30,8 +35,7 @@ public class PagingProductsPage extends BasePage {
 	/** Az adott oldalszám gombja, de csak akkor, ha az az aktív oldal. */
 	private By activePageButton(int pageNumber) {
 		// //li[contains(@class, 'active')]   : a lapozó azon eleme, amelyik épp aktív (az aktuális oldal),
-		// /button[@aria-label='Page-N']      : és közvetlenül benne az N. oldal gombja.
-		//										Csak akkor talál elemet, ha éppen az N. oldal az aktív.
+		// /button[@aria-label='Page-N']      : és közvetlenül benne az N. oldal gombja. Csak akkor talál elemet, ha éppen az N. oldal az aktív.
 		return By.xpath("//li[contains(@class, 'active')]/button[@aria-label='Page-" + pageNumber + "']");
 	}
 

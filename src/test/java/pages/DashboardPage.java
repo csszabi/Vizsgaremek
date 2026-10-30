@@ -10,9 +10,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Page Object az admin Dashboard oldalhoz (/admin/dashboard).
- * 
- * Admin bejelentkezés után ide irányít az oldal. A betöltést az oldal
- * "Sales over the years" címe alapján ismerjük fel.
+ *
+ * <p><b>Mit modellez:</b> az admin bejelentkezés utáni nyitóoldalt. A betöltést az
+ * oldal "Sales over the years" címe alapján ismerjük fel.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #isLoaded()} – ellenőrzi, hogy a Dashboard betöltött-e</li>
+ * </ul>
  */
 public class DashboardPage extends BasePage {
 

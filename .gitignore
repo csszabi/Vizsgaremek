@@ -18,3 +18,4 @@ bin/
 # Operációs rendszer
 .DS_Store
 Thumbs.db
+/doc

@@ -13,22 +13,31 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Page Object egy számla PDF letöltéséhez a Practice Software Testing oldalon,
  * vásárlói (customer) fiókkal.
- * 
- * Lefedett folyamat: bejelentkezés → My account → Invoices → egy számla
- * Details oldala → Download PDF.
- * 
- * Fontos: a Download PDF gomb addig le van tiltva (disabled), amíg a szerver el nem
- * készíti a PDF-et (a háttérben futó PDF-készítés "COMPLETED" állapotba nem kerül).
- * Az oldal ezt az állapotot 20 másodpercenként kérdezi le. Ha egy számlához a
- * PDF-készítés el sem indult, a gomb soha nem lesz engedélyezett. Ezért a teszt nem
- * csak az első számlát nézi meg, hanem sorban többet, és az első olyat tölti le,
- * amelyiknél a PDF elkészült.
- * 
- * A letöltés a böngésző saját letöltéseként történik, ezért a sikerességét a
+ *
+ * <p><b>Mit modellez:</b> a számlák listáját és a számla részletei oldalt.
+ * Bejelentkezés → Invoices → egy számla Details oldala → Download PDF.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #downloadData(String, String)} – bejelentkezés, majd az első letölthető
+ *       számla PDF-jének letöltése</li>
+ *   <li>{@link #getTriedInvoices()} – hány számlát vizsgált meg a letöltés</li>
+ *   <li>{@link #isFileDownloaded(java.nio.file.Path)} – megérkezett-e a PDF a letöltési mappába</li>
+ *   <li>{@link #isDownloadErrorDisplayed()} – jelzett-e hibát az oldal a letöltésnél</li>
+ * </ul>
+ *
+ * <p><b>Fontos:</b> a Download PDF gomb addig le van tiltva (disabled), amíg a szerver
+ * el nem készíti a PDF-et. Az oldal ezt az állapotot 20 másodpercenként kérdezi le. 
+ * Ha egy számlához a  * PDF-készítés el sem indult, a gomb soha nem lesz engedélyezett. 
+ * Ezért a teszt nem  * csak az első számlát nézi meg, hanem sorban többet, és az első olyat
+ * tölti le, amelyiknél a PDF elkészült.
+ *
+ * <p>A letöltés a böngésző saját letöltéseként történik, ezért a sikerességét a
  * letöltési mappában megjelenő PDF fájllal lehet ellenőrizni.
- * 
- * A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
- * történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class DownloadDataPage extends BasePage {
 
@@ -165,7 +174,6 @@ public class DownloadDataPage extends BasePage {
 
 	/**
 	 * Megvárja, hogy a letöltési mappában megjelenjen egy teljesen letöltött PDF fájl.
-	 * (A Chrome a letöltés közben .crdownload kiterjesztést használ, azt nem fogadjuk el.)
 	 *
 	 * @param downloadDir a böngészőben beállított letöltési mappa
 	 * @return true, ha 60 mp-en belül megjelent egy .pdf fájl; különben false

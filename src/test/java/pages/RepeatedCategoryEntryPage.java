@@ -10,12 +10,20 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Page Object több kategória egymás utáni felvételéhez (adatvezérelt teszthez)
  * a Practice Software Testing admin felületén.
- * 
- * Folyamat: egyszer bejelentkezik, majd minden kategóriához közvetlen URL-lel
- * megnyitja az Add Category űrlapot, kitölti, elmenti, és megvárja a
- * "Category saved!" üzenetet.
- * 
- * A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ *
+ * <p><b>Mit modellez:</b> az Add Category űrlapot ismételt használatra. Egyszer
+ * bejelentkezik, majd minden kategóriához közvetlen URL-lel megnyitja az űrlapot,
+ * kitölti, elmenti, és megvárja a "Category saved!" üzenetet.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #loginAndOpenCategories(String, String)} – bejelentkezés és a Categories lista megnyitása</li>
+ *   <li>{@link #openAddCategoryForm()} – az Add Category űrlap megnyitása közvetlen URL-lel</li>
+ *   <li>{@link #addCategory(String, String, String)} – az űrlap kitöltése és mentése</li>
+ *   <li>{@link #isCategorySavedDisplayed()} – a sikerüzenet ellenőrzése</li>
+ * </ul>
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
  * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class RepeatedCategoryEntryPage extends BasePage {

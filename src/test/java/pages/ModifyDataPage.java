@@ -12,15 +12,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Page Object egy meglévő kategória módosításához a Practice Software Testing
  * admin felületén.
- * 
- * Lefedett folyamat: menü → Categories → a kategória sorában Edit →
- * név és slug átírása → Save → "Category saved!" üzenet.
- * 
- * Az Edit Category űrlap ugyanazt a felületet használja, mint az Add Category,
+ *
+ * <p><b>Mit modellez:</b> a kategórialista Edit funkcióját és az Edit Category űrlapot.
+ * Menü → Categories → a kategória sorában Edit → név és slug átírása → Save →
+ * "Category saved!" üzenet.
+ *
+ * <p><b>Funkciói:</b>
+ * <ul>
+ *   <li>{@link #modifyData(String, String, String, String, String)} – a teljes folyamat
+ *       bejelentkezéssel együtt</li>
+ *   <li>{@link #modifyCategory(String, String, String)} – egy kategória módosítása
+ *       (már bejelentkezett adminnal)</li>
+ *   <li>{@link #isModifySuccessful()} – a sikerüzenet ellenőrzése</li>
+ * </ul>
+ *
+ * <p>Az Edit Category űrlap ugyanazt a felületet használja, mint az Add Category,
  * ezért a mezők lokátorai és a sikerüzenet megegyeznek az {@link AddDataPage}-ével.
- * 
- * A kattintások és gépelések a {@link BasePage} segédmetódusain keresztül
- * történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
+ *
+ * <p>A kattintások, gépelések és választások a {@link BasePage} segédmetódusain
+ * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class ModifyDataPage extends BasePage {
 
@@ -57,8 +67,7 @@ public class ModifyDataPage extends BasePage {
 	private By editButton(String categoryName) {
 		// //tr[...]                       : az a táblázatsor,
 	    // .//td[normalize-space()='...']  : amelyben van egy cella, aminek a szövege pontosan categoryName,
-	    // //a[contains(@data-test, ...)]  : és azon a soron belül az Edit link
-	    //                                   (a data-test értéke "category-edit-{id}", ezért elég az elejére illeszteni)
+	    // //a[contains(@data-test, ...)]  : és azon a soron belül az Edit link (a data-test értéke "category-edit-{id}", ezért elég az elejére illeszteni)
 	    return By.xpath("//tr[.//td[normalize-space()='" + categoryName + "']]"+ "//a[contains(@data-test, 'category-edit-')]");
 
 	}
@@ -128,8 +137,7 @@ public class ModifyDataPage extends BasePage {
 
 	/**
 	 * Lecseréli egy beviteli mező tartalmát.
-	 * A clear() nem vált ki input eseményt, így az Angular űrlap a régi értéket
-	 * tartaná meg, ezért Ctrl+A + Backspace törlést használunk.
+	 * A clear() nem vált ki input eseményt, így az űrlap a régi értéket tartaná meg.
 	 * Közvetlenül a sendKeys()-t hívja, ezért itt külön kell a bemutató módú pause().
 	 */
 	private void replaceText(WebElement input, String text) {
