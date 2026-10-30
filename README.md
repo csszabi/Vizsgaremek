@@ -12,7 +12,7 @@ Cloudflare-védelme miatt a tesztek nem érik el az oldalt
 | Eszköz | Verzió | Szerepe |
 |---|---|---|
 | Java | 21 | programozási nyelv |
-| Maven | 3.9+ | build és függőségkezelés |
+| Maven (Maven Wrapperrel) | 3.10.0 | build és függőségkezelés |
 | Selenium WebDriver | 4.51.0 | a böngésző vezérlése |
 | WebDriverManager | 6.4.0 | a ChromeDriver automatikus letöltése |
 | JUnit Jupiter | 6.1.3 | tesztkeretrendszer |
@@ -33,6 +33,11 @@ src/test/resources/
 ├── categories.csv            tesztadatok az adatvezérelt teszthez
 ├── junit-platform.properties a tesztosztályok futási sorrendje (@Order)
 └── allure.properties         az Allure eredmények helye
+
+mvnw, mvnw.cmd                Maven Wrapper indítószkript (Linux/macOS, ill. Windows)
+.mvn/wrapper/                 a Wrapper beállításai (a használt Maven verzió)
+.github/workflows/            GitHub Actions workflow
+docs/                         vezetői tesztjelentés
 ```
 
 A projekt a **Page Object Model** mintát követi: a tesztek nem közvetlenül keresik az
@@ -77,8 +82,9 @@ amelyet a felhasználó megtekinthetne vagy elfogadhatna).
 
 ### Előfeltételek
 
-- JDK 21
-- Maven 3.9 vagy újabb
+- JDK 21 (a `JAVA_HOME` környezeti változó erre mutasson, vagy a `java` legyen a PATH-on)
+- Maven telepítése **nem szükséges**: a projekt Maven Wrappert tartalmaz, amely első
+  futáskor automatikusan letölti a megfelelő Maven verziót (3.10.0)
 - Google Chrome (a hozzá illő ChromeDriver-t a WebDriverManager tölti le)
 - internetkapcsolat (a tesztek az élő demóoldalon futnak)
 
@@ -94,17 +100,21 @@ amelyet a felhasználó megtekinthetne vagy elfogadhatna).
 
 ### Parancssorból
 
-Az összes teszt:
+A projekt mappájában, a Maven Wrapperrel:
 
-```bash
-mvn clean test
-```
+| Rendszer | Parancs |
+|---|---|
+| Windows (PowerShell, cmd) | `.\mvnw.cmd clean test` |
+| Linux, macOS, Git Bash | `./mvnw clean test` |
 
 Egyetlen tesztosztály:
 
 ```bash
-mvn test -Dtest=LogonSuccessTest
+./mvnw test -Dtest=LogonSuccessTest
 ```
+
+A README további parancsai a `./mvnw` formát használják; Windowson helyette `.\mvnw.cmd`
+írandó. Ha a gépen telepítve van a Maven, a parancsok `mvn`-nel is működnek.
 
 ### Bemutató mód (lassítás)
 
@@ -113,7 +123,7 @@ lassítás, ilyenkor minden kattintás és gépelés előtt a megadott ideig (ez
 várnak, hogy a futás szemmel követhető legyen:
 
 ```bash
-mvn test -Dslowmo=800
+./mvnw test -Dslowmo=800
 ```
 
 Eclipse-ből futtatva a lassítás a run configuration *Arguments → VM arguments* mezőjében
@@ -126,14 +136,14 @@ A tesztek futás közben a `target/allure-results` mappába írják az eredmény
 Ebből a riport:
 
 ```bash
-mvn allure:serve
+./mvnw allure:serve
 ```
 
 Ez elkészíti a riportot és megnyitja a böngészőben. Csak a fájlok előállításához
 (böngésző nélkül):
 
 ```bash
-mvn allure:report
+./mvnw allure:report
 ```
 
 Ilyenkor a riport a `target/site/allure-maven-plugin/index.html` fájlba kerül.
