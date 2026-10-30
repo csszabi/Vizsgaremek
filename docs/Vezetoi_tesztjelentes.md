@@ -2,14 +2,15 @@
 
 **Projekt:** Practice Software Testing (Toolshop) – automatizált UI tesztek
 **Tesztelt rendszer:** https://practicesoftwaretesting.com/ (Toolshop v5.0)
+**Futtatás időpontja:** 2026. október 30., 22:08
 **Készítette:** Csongár Szabolcs
 
 ---
 
 ## 1. Összefoglaló
 
-A webáruház 10 kulcsfontosságú funkcióját automatizált tesztekkel ellenőriztük.
-**10 tesztből 9 sikeres (90%).** A regisztráció, a be- és kijelentkezés, a termékböngészés,
+A webáruház kulcsfontosságú funkcióit 11 automatizált tesztesettel ellenőriztük.
+**11 tesztből 10 sikeres (91%).** A regisztráció, a be- és kijelentkezés (admin és vásárló), a termékböngészés,
 a számlaletöltés és a kategóriák felvétele, módosítása hibátlanul működik.
 
 **1 hibát találtunk:** a kategória törlése után az admin felület kb. 2 percig még a törölt
@@ -25,7 +26,7 @@ a böngészőben, úgy, ahogy egy valódi felhasználó használná.
 
 | Terület | Funkciók |
 |---|---|
-| Felhasználókezelés | regisztráció, bejelentkezés, kijelentkezés |
+| Felhasználókezelés | regisztráció, bejelentkezés (admin és vásárló), kijelentkezés |
 | Vásárlói funkciók | terméklista lapozása, számla PDF letöltése |
 | Adminisztráció (kategóriák) | felvétel, módosítás, törlés, listázás, több kategória felvétele fájlból |
 
@@ -44,28 +45,29 @@ a böngészőben, úgy, ahogy egy valódi felhasználó használná.
 | Operációs rendszer | Windows 11 |
 | Tesztelt környezet | éles demóoldal (practicesoftwaretesting.com) |
 | Eszközök | Java 21, Selenium WebDriver 4.51, JUnit 6.1, Allure riport |
-| Teljes futási idő | kb. 1 perc 47 másodperc |
+| Teljes futási idő | kb. 1 perc 35 másodperc |
 
 ## 4. Eredmények
 
-| # | Teszteset | Eredmény | Idő |
+| TC | Teszteset | Eredmény | Idő |
 |---|---|---|---|
-| 1 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 13,7 s |
-| 2 | Admin bejelentkezés | ✅ Sikeres | 5,3 s |
-| 3 | Kijelentkezés | ✅ Sikeres | 7,5 s |
-| 4 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 4,9 s |
-| 5 | Számla PDF letöltése | ✅ Sikeres | 7,3 s |
-| 6 | Kategória felvétele | ✅ Sikeres | 6,8 s |
-| 7 | Kategória módosítása | ✅ Sikeres | 10,3 s |
-| 8 | Kategória törlése | ❌ **Sikertelen** | 18,7 s |
-| 9 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 11,6 s |
-| 10 | Kategórialista megjelenítése | ✅ Sikeres | 7,8 s |
+| TC-01 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 11,1 s |
+| TC-02 | Admin bejelentkezés | ✅ Sikeres | 3,8 s |
+| TC-02.1 | Vásárlói bejelentkezés | ✅ Sikeres | 4,7 s |
+| TC-03 | Kijelentkezés | ✅ Sikeres | 6,3 s |
+| TC-04 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 3,8 s |
+| TC-05 | Számla PDF letöltése | ✅ Sikeres | 6,5 s |
+| TC-06 | Kategória felvétele | ✅ Sikeres | 5,5 s |
+| TC-07 | Kategória módosítása | ✅ Sikeres | 7,4 s |
+| TC-08 | Kategória törlése | ❌ **Sikertelen** | 17,5 s |
+| TC-09 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 11,7 s |
+| TC-10 | Kategórialista megjelenítése | ✅ Sikeres | 4,3 s |
 
 **Összesítés:**
 
 | Összes teszt | Sikeres | Sikertelen | Kihagyott | Sikerességi arány |
 |---|---|---|---|---|
-| 10 | 9 | 1 | 0 | **90%** |
+| 11 | 10 | 1 | 0 | **91%** |
 
 ## 5. Talált hibák
 
@@ -105,7 +107,7 @@ kategória még szerepel.
 
 ## 7. Konklúzió és javaslatok
 
-1. **A tesztelt funkciók 90%-a hibátlanul működik**, a kritikus folyamatok (regisztráció,
+1. **A tesztelt funkciók 91%-a hibátlanul működik**, a kritikus folyamatok (regisztráció,
    belépés, vásárlói funkciók, adatfelvétel és -módosítás) rendben vannak.
 2. **A rendszer használható, a H-01 hiba nem akadályozza a működést.** A törölt kategória
    kb. 2 percig még látszik a listában; ez félrevezető, de adatvesztést nem okoz.
