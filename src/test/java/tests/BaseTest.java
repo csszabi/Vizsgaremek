@@ -1,5 +1,7 @@
 package tests;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -7,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import utils.CloudflareWait;
 
 /**
  * Az összes tesztosztály közös ősosztálya.
@@ -45,8 +48,12 @@ public abstract class BaseTest {
 		if (!isRunningOnCi()) {
 			driver.manage().window().maximize();
 		}
-
+		
 		driver.get(BASE_URL);
+
+		// GitHub Actions-ben a Cloudflare ellenőrző oldalt adhat; megvárjuk, amíg továbbenged.
+		// Helyben nincs ellenőrzés, ott azonnal továbblép.
+		CloudflareWait.waitForVerification(driver, Duration.ofSeconds(60));
 	}
 
 	/**
