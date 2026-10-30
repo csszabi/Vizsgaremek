@@ -27,7 +27,7 @@ src/test/java/
 │   └── BaseTest  közös ősosztály: böngésző indítása / bezárása
 ├── pages/        Page Object osztályok (hogyan érjük el az oldal elemeit)
 │   └── BasePage  közös ősosztály: várakozások, kattintás, gépelés
-└── utils/        segédosztályok (CSV olvasás)
+└── utils/        segédosztályok (CSV olvasás, Cloudflare ellenőrző oldal kivárása)
 
 src/test/resources/
 ├── categories.csv            tesztadatok az adatvezérelt teszthez
@@ -192,6 +192,24 @@ Saját gépről ugyanez az oldal 200-as státusszal, rendesen betölt, és a tes
 – ugyanazokkal a headless beállításokkal is (`CI=true`) – lefutnak. A teszteket ezért
 **helyben** kell futtatni (lásd: [Futtatás helyben](#futtatás-helyben)); a GitHub Actions
 workflow a CI-beállítás bemutatására és a korlát dokumentálására szolgál.
+
+**Kipróbált megoldás: az ellenőrzés kivárása.** A Cloudflare ellenőrző oldala bizonyos
+esetekben emberi beavatkozás nélkül, néhány másodperc alatt magától továbbenged. Ennek
+kihasználására készült a `utils/CloudflareWait` osztály: a `BaseTest` a kezdőoldal
+megnyitása után meghívja, és ha az ellenőrző oldal látszik („Just a moment...” cím vagy
+„Performing security verification” szöveg), legfeljebb 60 másodpercig várja, hogy eltűnjön;
+ha beragad, újratölti az oldalt.
+
+Az eredmény GitHub Actions-ben: **a Cloudflare 60 másodperc alatt sem engedte tovább a
+böngészőt**, vagyis a GitHub gépeiről érkező headless Chrome-ot véglegesen blokkolja. A
+tesztek ezért továbbra is elbuknak, de már egyértelmű hibaüzenettel:
+
+```
+A Cloudflare ellenőrző oldala 60 mp alatt sem engedett tovább (a tesztelt oldal blokkolja ezt a gépet)
+```
+
+Az osztály a projektben maradt: helyben nincs hatása (ott nincs ellenőrző oldal, azonnal
+továbblép), CI-ben pedig a riportban is egyértelművé teszi a bukás okát.
 
 A Cloudflare ellenőrzését a tesztek szándékosan nem kerülik meg. 
 
