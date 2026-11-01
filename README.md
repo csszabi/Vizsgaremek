@@ -158,6 +158,17 @@ Ha a riportot a bukott tesztekkel együtt szeretnéd egy lépésben elkészíten
 `-Dmaven.test.failure.ignore=true` kapcsolót, különben a Maven a bukott teszt után megáll,
 és a riport nem készül el.
 
+## Tesztjelentések
+
+A tesztek és a technikai riport (Surefire, Allure) automatikusan készül minden futáskor;
+a vezetői jelentés ezekből az eredményekből, kézi értékeléssel készült egy adott futásról.
+
+| Jelentés | Hogyan készül | Hol található |
+|---|---|---|
+| Surefire riport | automatikusan, minden futáskor | `target/surefire-reports/` |
+| Allure riport | automatikusan gyűjti az eredményeket; a riport egy paranccsal készül (lásd fent) | `target/allure-results/`, `target/site/allure-maven-plugin/` |
+| Vezetői tesztjelentés | kézzel, egy adott futás eredményei alapján | [`docs/Vezetoi_tesztjelentes.md`](docs/Vezetoi_tesztjelentes.md), [PDF](docs/Vezetoi_tesztjelentes.pdf) |
+
 ## GitHub Actions
 
 A tesztek GitHub Actions-ben is futnak. A workflow: [`.github/workflows/ui-tests.yml`](.github/workflows/ui-tests.yml)
