@@ -34,6 +34,10 @@ src/test/resources/
 ├── junit-platform.properties a tesztosztályok futási sorrendje (@Order)
 └── allure.properties         az Allure eredmények helye
 
+src/test/allure/
+├── environment.properties    az Allure riport környezeti adatai
+└── categories.json           a bukások csoportosítása az Allure riportban
+
 mvnw, mvnw.cmd                Maven Wrapper indítószkript (Linux/macOS, ill. Windows)
 .mvn/wrapper/                 a Wrapper beállításai (a használt Maven verzió)
 .github/workflows/            GitHub Actions workflow
@@ -156,7 +160,30 @@ Ilyenkor a riport a `target/site/allure-maven-plugin/index.html` fájlba kerül.
 
 Ha a riportot a bukott tesztekkel együtt szeretnéd egy lépésben elkészíteni, add hozzá a
 `-Dmaven.test.failure.ignore=true` kapcsolót, különben a Maven a bukott teszt után megáll,
-és a riport nem készül el.
+és a riport nem készül el. A teljes folyamat egy paranccsal:
+
+```bash
+./mvnw clean test allure:report -Dmaven.test.failure.ignore=true
+```
+
+### Vezetői nézet az Allure riportban
+
+A riport *Overview* oldala vezetői összefoglalóként is használható (sikerességi arány,
+futási idő, a tesztesetek TC-azonosítóval). Ezt két fájl egészíti ki a `src/test/allure`
+mappában, amelyeket a `pom.xml` minden Maven-futás elején automatikusan bemásol a
+`target/allure-results` mappába:
+
+- **`environment.properties`** – az *Environment* blokk: a tesztelt rendszer és URL,
+  a böngésző, a Java és a használt eszközök.
+- **`categories.json`** – a *Categories* fül: a bukásokat érthető csoportokba sorolja,
+  így első ránézésre látszik, hogy egy bukás termékhiba vagy környezeti ok:
+  - *Ismert alkalmazáshiba (H-01)* – a törölt kategória a listában marad
+  - *Környezeti hiba (Cloudflare)* – a tesztelt oldal blokkolja a böngészőt
+  - *Demóoldal állapota* – egyik számlához sem készült el a PDF
+  - *Egyéb sikertelen ellenőrzés* és *Tesztfutási hiba* – minden más, vizsgálandó bukás
+
+A két fájl csak Mavennel futtatva kerül a riportba (parancssor, *Run As → Maven build*
+vagy GitHub Actions); Eclipse-ből *Run As → JUnit Test*-tel futtatva nem.
 
 ## Tesztjelentések
 
@@ -166,7 +193,7 @@ a vezetői jelentés ezekből az eredményekből, kézi értékeléssel készül
 | Jelentés | Hogyan készül | Hol található |
 |---|---|---|
 | Surefire riport | automatikusan, minden futáskor | `target/surefire-reports/` |
-| Allure riport | automatikusan gyűjti az eredményeket; a riport egy paranccsal készül (lásd fent) | `target/allure-results/`, `target/site/allure-maven-plugin/` |
+| Allure riport | automatikusan, egy paranccsal; környezeti adatokkal és a bukások kategorizálásával (lásd fent) | `target/allure-results/`, `target/site/allure-maven-plugin/` |
 | Vezetői tesztjelentés | kézzel, egy adott futás eredményei alapján | [`docs/Vezetoi_tesztjelentes.md`](docs/Vezetoi_tesztjelentes.md), [PDF](docs/Vezetoi_tesztjelentes.pdf) |
 
 ## GitHub Actions

@@ -73,6 +73,33 @@
 
   <build>
   	<plugins>
+  		<!-- Az Allure riport kiegészítői (src/test/allure): a környezet leírása
+  		     (environment.properties) és a bukások csoportosítása (categories.json).
+  		     A tesztek előtt bemásolja őket a target/allure-results mappába, így
+  		     minden futás riportjában automatikusan megjelennek. -->
+  		<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-resources-plugin</artifactId>
+  			<version>3.3.1</version>
+  			<executions>
+  				<execution>
+  					<id>copy-allure-config</id>
+  					<phase>process-test-resources</phase>
+  					<goals>
+  						<goal>copy-resources</goal>
+  					</goals>
+  					<configuration>
+  						<outputDirectory>${project.build.directory}/allure-results</outputDirectory>
+  						<resources>
+  							<resource>
+  								<directory>src/test/allure</directory>
+  							</resource>
+  						</resources>
+  					</configuration>
+  				</execution>
+  			</executions>
+  		</plugin>
+
   		<!-- A tesztek futtatója (mvn test). A verziót rögzítjük, mert a Maven régebbi
   		     alapértelmezett verziója a JUnit 5/6 teszteket nem találja meg.
   		     Az eredményt a target/surefire-reports mappába írja; ebből készül

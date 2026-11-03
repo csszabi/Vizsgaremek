@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Ismert alkalmazáshiba (H-01: a törölt kategória a listában marad)",
+    "messageRegex": "(?s).*nem tűnt el a listából.*",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Környezeti hiba (Cloudflare blokkolja a böngészőt)",
+    "messageRegex": "(?s).*Cloudflare.*",
+    "matchedStatuses": ["failed", "broken"]
+  },
+  {
+    "name": "Demóoldal állapota (egyik számlához sem készült el a PDF)",
+    "messageRegex": "(?s).*sem készült el.*",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Egyéb sikertelen ellenőrzés (vizsgálandó termékhiba)",
+    "messageRegex": "(?s)(?!.*(nem tűnt el a listából|Cloudflare|sem készült el)).*",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Tesztfutási hiba (pl. elem nem található, időtúllépés)",
+    "messageRegex": "(?s)(?!.*Cloudflare).*",
+    "matchedStatuses": ["broken"]
+  }
+]
