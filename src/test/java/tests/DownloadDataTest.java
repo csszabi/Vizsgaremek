@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import pages.DownloadDataPage;
+import utils.TestConfig;
 
 /**
  * Adat (számla PDF) letöltésének tesztje a Practice Software Testing oldalon.
@@ -128,7 +129,7 @@ class DownloadDataTest extends BaseTest {
 	void downloadDataTest () {
 
 		DownloadDataPage downloadDataPage = new DownloadDataPage(driver);
-		boolean downloadStarted = downloadDataPage.downloadData("customer@practicesoftwaretesting.com", "welcome01");
+		boolean downloadStarted = downloadDataPage.downloadData(TestConfig.CUSTOMER_EMAIL, TestConfig.CUSTOMER_PASSWORD);
 
 		// Ha egyik vizsgált számlához sem készült el a PDF, az a demóoldal szerverének
 		// állapotán múlik (a PDF-készítés el sem indult), nem a tesztkódon

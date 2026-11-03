@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import pages.AddDataPage;
 import pages.ModifyDataPage;
+import utils.TestConfig;
 
 /**
  * Meglévő adat (kategória) módosításának tesztje a Practice Software Testing
@@ -68,7 +69,7 @@ class ModifyDataTest extends BaseTest {
 		String slug = "teszt-" + System.currentTimeMillis();
 
 		AddDataPage addDataPage = new AddDataPage(driver);
-		addDataPage.addData("admin@practicesoftwaretesting.com", "welcome01", "Automata", slug);
+		addDataPage.addData(TestConfig.ADMIN_EMAIL, TestConfig.ADMIN_PASSWORD, "Automata", slug);
 		assertTrue(addDataPage.isCategorySavedDisplayed(), "Az előfeltétel kategória nem jött létre!");
 
 		// Módosítás: a sort a slug alapján keresi meg

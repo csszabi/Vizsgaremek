@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import pages.AccountPage;
 import pages.DashboardPage;
 import pages.LoginPage;
+import utils.TestConfig;
 
 /**
  * Sikeres bejelentkezés tesztje a Practice Software Testing oldalon.
@@ -62,7 +63,7 @@ class LogonSuccessTest extends BaseTest {
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.open();
 
-		loginPage.login("admin@practicesoftwaretesting.com", "welcome01");
+		loginPage.login(TestConfig.ADMIN_EMAIL, TestConfig.ADMIN_PASSWORD);
 
 		DashboardPage dashboardPage = new DashboardPage(driver);
 		assertTrue(dashboardPage.isLoaded(), "Bejelentkezés után nem töltött be a Dashboard!");
@@ -98,7 +99,7 @@ class LogonSuccessTest extends BaseTest {
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.open();
 
-		loginPage.login("customer@practicesoftwaretesting.com", "welcome01");
+		loginPage.login(TestConfig.CUSTOMER_EMAIL, TestConfig.CUSTOMER_PASSWORD);
 
 		AccountPage accountPage = new AccountPage(driver);
 		assertTrue(accountPage.isLoaded(), "Bejelentkezés után nem töltött be a My account oldal!");

@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.DashboardPage;
 import pages.LoginPage;
 import pages.LogoffPage;
+import utils.TestConfig;
 
 /**
  * Sikeres kijelentkezés tesztje a Practice Software Testing oldalon.
@@ -63,7 +64,7 @@ class LogOffSuccessTest extends BaseTest {
 		// 1. Bejelentkezés
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.open();
-		loginPage.login("admin@practicesoftwaretesting.com","welcome01");
+		loginPage.login(TestConfig.ADMIN_EMAIL,TestConfig.ADMIN_PASSWORD);
 
 		// 2. Megvárjuk, hogy a Dashboard teljesen betöltsön, különben a menüre
 		//    kattintás még a régi oldalon történhet

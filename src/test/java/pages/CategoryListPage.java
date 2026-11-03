@@ -26,16 +26,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class CategoryListPage extends BasePage {
 
-	// Bejelentkezés
-    private By signInButton =By.cssSelector("[data-test='nav-sign-in']");
-    private By emailField = By.id("email");
-    private By passwordField = By.id("password");
-    private By loginButton = By.cssSelector("[data-test='login-submit']");
-
-    // Navigáció az admin menüben
-    private By menuButton = By.cssSelector("[data-test='nav-menu']");
-    private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
-
     // A táblázat adatsorai (a fejléc sora nélkül)
     private By categoryRows = By.cssSelector("table tbody tr");
 
@@ -59,19 +49,9 @@ public class CategoryListPage extends BasePage {
      * @param password admin jelszava
      */
     public void openCategoryList(String email, String password) {
-        driver.get("https://practicesoftwaretesting.com/");
-
-        waitAndClick(signInButton);
-
-        type(emailField, email);
-        type(passwordField, password);
-        click(loginButton);
-
-        // Megvárjuk a bejelentkezés utáni átirányítást (teljes oldal-újratöltés)
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
-
-        waitAndClick(menuButton);
-        waitAndClick(categoriesButton);
+        open();
+        signIn(email, password);
+        openAdminCategories();
 
         // A lista aszinkron töltődik be
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(categoryRows, 0));

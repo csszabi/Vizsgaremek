@@ -20,7 +20,6 @@ import org.openqa.selenium.WebDriver;
  */
 public class LogoffPage extends BasePage {
 
-	private By menuButton = By.cssSelector("[data-test='nav-menu']");
 	private By logoffButton = By.cssSelector("[data-test='nav-sign-out']");
 
 	/**
@@ -35,7 +34,7 @@ public class LogoffPage extends BasePage {
 	 */
 	public void logoff() {
 
-	    waitAndClick(menuButton);
+	    openUserMenu();
 	    waitAndClick(logoffButton);
 	}
 

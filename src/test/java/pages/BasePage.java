@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import utils.TestConfig;
+
 /**
  * Az összes Page Object közös ősosztálya.
  *
@@ -21,6 +23,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * <p><b>Keretrendszer-funkciói:</b>
  * <ul>
+ *   <li>{@link #open()} – a tesztelt oldal kezdőlapjának megnyitása</li>
+ *   <li>{@link #signIn(String, String)} – bejelentkezés a fejléc Sign in linkjéről</li>
+ *   <li>{@link #openUserMenu()}, {@link #openAdminCategories()} – a felhasználói menü,
+ *       illetve az admin Categories lista megnyitása</li>
  *   <li>{@link #find(By)} – elem keresése várakozás nélkül</li>
  *   <li>{@link #click(By)}, {@link #waitAndClick(By)} – kattintás (azonnal, illetve
  *       a kattinthatóság megvárásával)</li>
@@ -46,11 +52,60 @@ public class BasePage {
 	/** A teszt által létrehozott böngésző-példány, amelyet minden oldal közösen használ. */
 	protected WebDriver driver;
 
+	// Bejelentkezés: a fejléc Sign in linkje és a login űrlap
+	private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
+	private By emailField = By.id("email");
+	private By passwordField = By.id("password");
+	private By loginButton = By.cssSelector("[data-test='login-submit']");
+
+	// A jobb felső felhasználói menü és annak admin Categories pontja
+	private By menuButton = By.cssSelector("[data-test='nav-menu']");
+	private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
+
 	/**
 	 * @param driver a teszt által elindított WebDriver
 	 */
 	public BasePage(WebDriver driver) {
 		this.driver = driver;
+	}
+
+	/** Megnyitja a tesztelt oldal kezdőlapját. */
+	public void open() {
+		driver.get(TestConfig.BASE_URL);
+	}
+
+	/**
+	 * Bejelentkezik a megadott adatokkal, és megvárja, hogy az oldal átirányítson
+	 * a login oldalról. Kijelentkezett állapotból, olyan oldalról kell hívni, ahol
+	 * a fejlécben látszik a Sign in link (pl. a kezdőoldalról).
+	 *
+	 * @param email felhasználó e-mail címe
+	 * @param password felhasználó jelszava
+	 */
+	protected void signIn(String email, String password) {
+
+		// Frissen betöltött oldal még renderelhet, ezért várni kell a linkre
+		waitAndClick(signInButton);
+
+		type(emailField, email);
+		type(passwordField, password);
+		click(loginButton);
+
+		// Az átirányítás teljes oldal-újratöltés: amíg le nem zajlik, a menü
+		// a régi oldalon is látszhat, és a rákattintás elveszne
+		new WebDriverWait(driver, Duration.ofSeconds(10))
+			.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
+	}
+
+	/** Megnyitja a jobb felső felhasználói menüt. Bejelentkezett felhasználó kell hozzá. */
+	protected void openUserMenu() {
+		waitAndClick(menuButton);
+	}
+
+	/** Megnyitja az admin menüből a Categories listát. Bejelentkezett admin kell hozzá. */
+	protected void openAdminCategories() {
+		openUserMenu();
+		waitAndClick(categoriesButton);
 	}
 
 	/**

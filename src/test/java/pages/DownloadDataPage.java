@@ -19,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * <p><b>Funkciói:</b>
  * <ul>
- *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása (a {@link BasePage}-ből)</li>
  *   <li>{@link #downloadData(String, String)} – bejelentkezés, majd az első letölthető
  *       számla PDF-jének letöltése</li>
  *   <li>{@link #getTriedInvoices()} – hány számlát vizsgált meg a letöltés</li>
@@ -29,8 +29,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * <p><b>Fontos:</b> a Download PDF gomb addig le van tiltva (disabled), amíg a szerver
  * el nem készíti a PDF-et. Az oldal ezt az állapotot 20 másodpercenként kérdezi le. 
- * Ha egy számlához a  * PDF-készítés el sem indult, a gomb soha nem lesz engedélyezett. 
- * Ezért a teszt nem  * csak az első számlát nézi meg, hanem sorban többet, és az első olyat
+ * Ha egy számlához a PDF-készítés el sem indult, a gomb soha nem lesz engedélyezett.
+ * Ezért a teszt nem csak az első számlát nézi meg, hanem sorban többet, és az első olyat
  * tölti le, amelyiknél a PDF elkészült.
  *
  * <p>A letöltés a böngésző saját letöltéseként történik, ezért a sikerességét a
@@ -50,12 +50,6 @@ public class DownloadDataPage extends BasePage {
 	 * így 25 mp alatt két lekérdezés is lefut.
 	 */
 	private static final Duration DOWNLOAD_READY_TIMEOUT = Duration.ofSeconds(25);
-
-	// Bejelentkezés
-	private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
-	private By emailAddressField = By.id("email");
-	private By passwordField = By.id("password");
-	private By loginButton = By.cssSelector("[data-test='login-submit']");
 
 	// My account → Invoices
 	private By invoicesButton = By.cssSelector("[data-test='nav-invoices']");
@@ -87,12 +81,6 @@ public class DownloadDataPage extends BasePage {
 		longWait = new WebDriverWait(driver, Duration.ofSeconds(60));
 	}
 
-	/** Megnyitja az oldal kezdőlapját. */
-	public void open() {
-
-		driver.get("https://practicesoftwaretesting.com/");
-	}
-
 	/**
 	 * Bejelentkezik, majd sorban megnyitja a számlákat (legfeljebb
 	 * {@value #MAX_INVOICES_TO_TRY} darabot), és az első olyannál, amelyikhez a PDF
@@ -106,16 +94,7 @@ public class DownloadDataPage extends BasePage {
 	 */
 	public boolean downloadData (String email, String password) {
 
-		// Bejelentkezés
-		waitAndClick(signInButton);
-
-		type(emailAddressField, email);
-		type(passwordField, password);
-
-		waitAndClick(loginButton);
-
-		// Megvárjuk a bejelentkezés utáni átirányítást (teljes oldal-újratöltés)
-		wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
+		signIn(email, password);
 
 		// Számlák menü megnyitása (bejelentkezés után a My account oldalra kerülünk)
 		waitAndClick(invoicesButton);

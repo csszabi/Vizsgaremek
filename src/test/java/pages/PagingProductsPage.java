@@ -48,8 +48,9 @@ public class PagingProductsPage extends BasePage {
     }
 
     /** Megnyitja a kezdőoldalt, és megvárja, hogy megjelenjen a lapozó. */
+    @Override
     public void open() {
-        driver.get("https://practicesoftwaretesting.com/");
+        super.open();
 
         wait.until(ExpectedConditions.elementToBeClickable(pageButton(1)));
     }

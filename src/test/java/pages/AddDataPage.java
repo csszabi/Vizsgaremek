@@ -33,16 +33,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class AddDataPage extends BasePage {
 
-	// Bejelentkezés
-	private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
-	private By emailAddressField = By.id("email");
-	private By passwordField = By.id("password");
-	private By loginButton = By.cssSelector("[data-test='login-submit']");
-
-	// Navigáció az admin menüben
-	private By menuButton = By.cssSelector("[data-test='nav-menu']");
-	private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
-
 	// Add Category űrlap
 	private By addCategoryButton = By.cssSelector("[data-test='category-add']");
 	private By parentIdField = By.id("parent_id");
@@ -89,25 +79,14 @@ public class AddDataPage extends BasePage {
 	 * @param password felhasználó jelszava
 	 */
 	public void login(String email, String password) {
-
-		waitAndClick(signInButton);
-
-		type(emailAddressField, email);
-		type(passwordField, password);
-		click(loginButton);
-
-		// Az átirányítás teljes oldal-újratöltés: amíg le nem zajlik, a menü
-		// a régi oldalon is látszhat, és a rákattintás elveszne
-		wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
+		signIn(email, password);
 	}
 
 	/**
 	 * Megnyitja az admin menüből a Categories listát. Bejelentkezett admin kell hozzá.
 	 */
 	public void openCategories() {
-
-		waitAndClick(menuButton);
-		waitAndClick(categoriesButton);
+		openAdminCategories();
 	}
 
 	/**

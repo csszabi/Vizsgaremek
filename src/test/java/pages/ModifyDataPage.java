@@ -34,16 +34,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class ModifyDataPage extends BasePage {
 
-	// Bejelentkezés
-	private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
-	private By emailAddressField = By.id("email");
-	private By passwordField = By.id("password");
-	private By loginButton = By.cssSelector("[data-test='login-submit']");
-
-	// Navigáció az admin menüben
-	private By menuButton = By.cssSelector("[data-test='nav-menu']");
-	private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
-
 	// Edit Category űrlap
 	private By nameField = By.id("name");
 	private By slugField = By.id("slug");
@@ -95,15 +85,7 @@ public class ModifyDataPage extends BasePage {
 	 */
 	public void modifyData (String email, String password, String categoryName, String name, String slug) {
 
-		waitAndClick(signInButton);
-
-		type(emailAddressField, email);
-		type(passwordField, password);
-		click(loginButton);
-
-		// Megvárjuk a bejelentkezés utáni átirányítást (teljes oldal-újratöltés)
-		wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
-
+		signIn(email, password);
 		modifyCategory(categoryName, name, slug);
 	}
 
@@ -117,8 +99,7 @@ public class ModifyDataPage extends BasePage {
 	 */
 	public void modifyCategory (String categoryName, String name, String slug) {
 
-		waitAndClick(menuButton);
-		waitAndClick(categoriesButton);
+		openAdminCategories();
 
 		// A módosítandó kategória sorának megvárása, majd Edit
 		wait.until(ExpectedConditions.visibilityOfElementLocated(categoryRow(categoryName)));

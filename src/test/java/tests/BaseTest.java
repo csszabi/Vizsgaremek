@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import utils.CloudflareWait;
+import utils.TestConfig;
 
 /**
  * Az összes tesztosztály közös ősosztálya.
@@ -38,9 +39,6 @@ import utils.CloudflareWait;
  */
 public abstract class BaseTest {
 
-	/** A tesztelt oldal kezdőlapja. */
-	protected static final String BASE_URL = "https://practicesoftwaretesting.com/";
-
 	/** A teszt böngészője; minden teszt előtt új példány indul. */
 	protected WebDriver driver;
 
@@ -64,7 +62,7 @@ public abstract class BaseTest {
 			driver.manage().window().maximize();
 		}
 		
-		driver.get(BASE_URL);
+		driver.get(TestConfig.BASE_URL);
 
 		// GitHub Actions-ben a Cloudflare ellenőrző oldalt adhat; megvárjuk, amíg továbbenged.
 		// Helyben nincs ellenőrzés, ott azonnal továbblép.

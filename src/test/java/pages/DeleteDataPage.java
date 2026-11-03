@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * <p><b>Funkciói:</b>
  * <ul>
- *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása (a {@link BasePage}-ből)</li>
  *   <li>{@link #deleteData(String, String, String)} – a teljes folyamat bejelentkezéssel együtt</li>
  *   <li>{@link #deleteCategory(String)} – egy kategória törlése (már bejelentkezett adminnal)</li>
  *   <li>{@link #isDeleteSuccessful()} – a "Category deleted." üzenet ellenőrzése</li>
@@ -30,16 +30,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * keresztül történnek, így bemutató módban (-Dslowmo=...) lassítva futnak.
  */
 public class DeleteDataPage extends BasePage {
-
-	// Bejelentkezés
-	private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
-	private By emailAddressField = By.id("email");
-	private By passwordField = By.id("password");
-	private By loginButton = By.cssSelector("[data-test='login-submit']");
-
-	// Navigáció az admin menüben
-	private By menuButton = By.cssSelector("[data-test='nav-menu']");
-	private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
 
 	// A jobb felső sarokban felugró toast üzenet (kb. 5 mp-ig látszik)
 	private By successMessage = By.cssSelector("[role='alert'].toast-message");
@@ -79,12 +69,6 @@ public class DeleteDataPage extends BasePage {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
-	/** Megnyitja az oldal kezdőlapját. */
-	public void open() {
-
-		driver.get("https://practicesoftwaretesting.com/");
-	}
-
 	/**
 	 * A teljes folyamat bejelentkezéssel együtt: a kezdőoldalról,
 	 * kijelentkezett állapotból kell indítani.
@@ -95,15 +79,7 @@ public class DeleteDataPage extends BasePage {
 	 */
 	public void deleteData(String email, String password, String categoryName) {
 
-		waitAndClick(signInButton);
-
-		type(emailAddressField, email);
-		type(passwordField, password);
-		waitAndClick(loginButton);
-
-		// Megvárjuk a bejelentkezés utáni átirányítást (teljes oldal-újratöltés)
-		wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
-
+		signIn(email, password);
 		deleteCategory(categoryName);
 	}
 
@@ -118,8 +94,7 @@ public class DeleteDataPage extends BasePage {
 	public void deleteCategory(String categoryName) {
 
 		// Kategóriák oldal megnyitása
-		waitAndClick(menuButton);
-		waitAndClick(categoriesButton);
+		openAdminCategories();
 
 		// A törlendő kategória sorának megvárása
 		wait.until(ExpectedConditions.visibilityOfElementLocated(categoryRow(categoryName)));

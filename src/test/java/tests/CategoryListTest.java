@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import pages.CategoryListPage;
+import utils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,8 +64,8 @@ public class CategoryListTest extends BaseTest {
         CategoryListPage page = new CategoryListPage(driver);
 
         page.openCategoryList(
-            "admin@practicesoftwaretesting.com",
-            "welcome01"
+            TestConfig.ADMIN_EMAIL,
+            TestConfig.ADMIN_PASSWORD
         );
 
         assertTrue(

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import pages.AddDataPage;
 import pages.DeleteDataPage;
+import utils.TestConfig;
 
 /**
  * Adat (kategória) törlésének tesztje a Practice Software Testing admin felületén.
@@ -81,7 +82,7 @@ class DeleteDataTest extends BaseTest {
 		String slug = "teszt-" + System.currentTimeMillis();
 
 		AddDataPage addDataPage = new AddDataPage(driver);
-		addDataPage.addData("admin@practicesoftwaretesting.com", "welcome01", "Automata", slug);
+		addDataPage.addData(TestConfig.ADMIN_EMAIL, TestConfig.ADMIN_PASSWORD, "Automata", slug);
 		assertTrue(addDataPage.isCategorySavedDisplayed(), "Az előfeltétel kategória nem jött létre!");
 
 		// Törlés: a sort a slug alapján keresi meg

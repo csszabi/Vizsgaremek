@@ -18,7 +18,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *
  * <p><b>Funkciói:</b>
  * <ul>
- *   <li>{@link #open()} – a kezdőoldal megnyitása</li>
+ *   <li>{@link #open()} – a kezdőoldal megnyitása, innen indul a regisztráció
+ *       (a {@link BasePage}-ből)</li>
  *   <li>{@link #register} – az űrlap kitöltése és elküldése</li>
  *   <li>{@link #isRegistrationSuccessful()} – a sikeres regisztráció ellenőrzése</li>
  *   <li>{@link #getRegistrationError()} – az oldal hibaüzenetének lekérdezése</li>
@@ -74,14 +75,6 @@ public class RegistrationPage extends BasePage {
 	public RegistrationPage(WebDriver driver) {
 		super(driver);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	}
-
-	/**
-	 * Megnyitja a tesztelt oldal kezdőlapját; innen indul a regisztráció.
-	 */
-	public void open() {
-
-		driver.get("https://practicesoftwaretesting.com/");
 	}
 
 	/**

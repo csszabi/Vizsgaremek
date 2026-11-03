@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import utils.TestConfig;
+
 /**
  * Page Object több kategória egymás utáni felvételéhez (adatvezérelt teszthez)
  * a Practice Software Testing admin felületén.
@@ -28,15 +30,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class RepeatedCategoryEntryPage extends BasePage {
 
-	// Bejelentkezés
-    private By signInButton = By.cssSelector("[data-test='nav-sign-in']");
-    private By emailField = By.id("email");
-    private By passwordField = By.id("password");
-    private By loginButton = By.cssSelector("[data-test='login-submit']");
-
-    // Navigáció az admin menüben
-    private By menuButton = By.cssSelector("[data-test='nav-menu']");
-    private By categoriesButton = By.cssSelector("[data-test='nav-admin-categories']");
+    // A Categories lista Add Category gombja
     private By addCategoryButton = By.cssSelector("[data-test='category-add']");
 
     // Add Category űrlap
@@ -68,7 +62,7 @@ public class RepeatedCategoryEntryPage extends BasePage {
      * Közvetlen URL-lel megnyitja az Add Category űrlapot (bejelentkezett admin kell hozzá).
      */
     public void openAddCategoryForm() {
-        driver.get("https://practicesoftwaretesting.com/admin/categories/add");
+        driver.get(TestConfig.BASE_URL + "admin/categories/add");
 
         wait.until(
             ExpectedConditions.visibilityOfElementLocated(nameField)
@@ -83,19 +77,9 @@ public class RepeatedCategoryEntryPage extends BasePage {
      */
     public void loginAndOpenCategories( String email, String password) {
 
-        driver.get("https://practicesoftwaretesting.com/");
-
-        waitAndClick(signInButton);
-
-        type(emailField, email);
-        type(passwordField, password);
-        click(loginButton);
-
-        // Megvárjuk a bejelentkezés utáni átirányítást (teljes oldal-újratöltés)
-        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/auth/login")));
-
-        waitAndClick(menuButton);
-        waitAndClick(categoriesButton);
+        open();
+        signIn(email, password);
+        openAdminCategories();
 
         // Csak megvárjuk, hogy a lista oldal betöltsön (az Add gombra nem kattintunk)
         wait.until(ExpectedConditions.elementToBeClickable(addCategoryButton));

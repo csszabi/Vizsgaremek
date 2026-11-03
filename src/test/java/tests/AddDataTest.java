@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import pages.AddDataPage;
+import utils.TestConfig;
 
 /**
  * Új adat (kategória) felvételének tesztje a Practice Software Testing admin felületén.
@@ -63,7 +64,7 @@ class AddDataTest extends BaseTest {
 		String slug = "teszt-" + System.currentTimeMillis();
 
 		AddDataPage addDataPage = new AddDataPage(driver);
-		addDataPage.addData("admin@practicesoftwaretesting.com", "welcome01", "Automata", slug);
+		addDataPage.addData(TestConfig.ADMIN_EMAIL, TestConfig.ADMIN_PASSWORD, "Automata", slug);
 
 		assertTrue(
 			    addDataPage.isCategorySavedDisplayed(),

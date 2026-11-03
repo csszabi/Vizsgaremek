@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import pages.RepeatedCategoryEntryPage;
+import utils.TestConfig;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -80,8 +81,8 @@ public class RepeatedCategoryEntryTest extends BaseTest {
             new RepeatedCategoryEntryPage(driver);
 
         page.loginAndOpenCategories(
-            "admin@practicesoftwaretesting.com",
-            "welcome01"
+            TestConfig.ADMIN_EMAIL,
+            TestConfig.ADMIN_PASSWORD
         );
 
         InputStream input = getClass()
