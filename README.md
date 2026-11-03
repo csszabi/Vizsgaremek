@@ -26,8 +26,8 @@ src/test/java/
 ├── tests/        tesztosztályok (mit ellenőrzünk)
 │   └── BaseTest  közös ősosztály: böngésző indítása / bezárása
 ├── pages/        Page Object osztályok (hogyan érjük el az oldal elemeit)
-│   └── BasePage  közös ősosztály: várakozások, kattintás, gépelés
-└── utils/        segédosztályok (Cloudflare ellenőrző oldal kivárása)
+│   └── BasePage  közös ősosztály: bejelentkezés, menü, várakozások, kattintás, gépelés
+└── utils/        segédosztályok (közös tesztadatok – TestConfig, Cloudflare ellenőrző oldal kivárása)
 
 src/test/resources/
 ├── categories.csv            tesztadatok az adatvezérelt teszthez
@@ -245,7 +245,9 @@ helyben is elbukik.
 
 ## Felhasznált tesztadatok
 
-- **Admin és vásárlói fiók:** a demóoldal nyilvános, beépített tesztfiókjai.
+- **Admin és vásárlói fiók:** a demóoldal nyilvános, beépített tesztfiókjai. Az e-mail
+  címek és jelszavak – a tesztelt oldal címével együtt – a `utils/TestConfig` osztályban
+  vannak, egy helyen.
 - **`categories.csv`:** a `RepeatedCategoryEntryTest` bemenete, pontosvesszővel elválasztva,
   fejléc sorral (`name;parent_category;slug`). A teszt minden slug végére futásonként
   egyedi utótagot tesz.
