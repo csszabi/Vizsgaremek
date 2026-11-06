@@ -2,17 +2,19 @@
 
 **Projekt:** Practice Software Testing (Toolshop) – automatizált UI tesztek
 **Tesztelt rendszer:** https://practicesoftwaretesting.com/ (Toolshop v5.0)
-**Futtatás időpontja:** 2026. november 6., 17:30
+**Futtatás időpontja:** 2026. november 6., 22:06
 **Készítette:** Csongár Szabolcs
 
 ---
 
 ## 1. Összefoglaló
 
-A webáruház kulcsfontosságú funkcióit 12 automatizált tesztesettel ellenőriztük.
-**12 tesztből 11 sikeres (92%).** A regisztráció, a be- és kijelentkezés (admin és vásárló), a termékböngészés,
+A webáruház kulcsfontosságú funkcióit 14 automatizált tesztesettel ellenőriztük, köztük
+két negatív tesztesettel (hibás adatokkal végzett regisztráció és bejelentkezés).
+**14 tesztből 13 sikeres (93%).** A regisztráció, a be- és kijelentkezés (admin és vásárló), a termékböngészés,
 a számlaletöltés, a kategóriák felvétele, módosítása és az adatkezelési nyilatkozat
-megjelenítése hibátlanul működik.
+megjelenítése hibátlanul működik, és az oldal a hibás adatokat (már regisztrált e-mail cím,
+nem létező fiók) helyesen, hibaüzenettel utasítja el.
 
 **1 hibát találtunk:** a kategória törlése után az admin felület kb. 2 percig még a törölt
 kategóriát is mutatja a listában. Maga a törlés megtörténik, de a felhasználó ezt nem látja,
@@ -27,7 +29,7 @@ a böngészőben, úgy, ahogy egy valódi felhasználó használná.
 
 | Terület | Funkciók |
 |---|---|
-| Felhasználókezelés | regisztráció, bejelentkezés (admin és vásárló), kijelentkezés |
+| Felhasználókezelés | regisztráció, bejelentkezés (admin és vásárló), kijelentkezés; sikertelen regisztráció és bejelentkezés hibás adatokkal |
 | Vásárlói funkciók | terméklista lapozása, számla PDF letöltése |
 | Adminisztráció (kategóriák) | felvétel, módosítás, törlés, listázás, több kategória felvétele fájlból |
 | Adatkezelés | az adatkezelési nyilatkozat (Privacy Policy) megnyitása és tartalma |
@@ -48,30 +50,35 @@ a böngészőben, úgy, ahogy egy valódi felhasználó használná.
 | Operációs rendszer | Windows 11 |
 | Tesztelt környezet | éles demóoldal (practicesoftwaretesting.com) |
 | Eszközök | Java 21, Selenium WebDriver 4.51, JUnit 6.1, Allure riport |
-| Teljes futási idő | kb. 1 perc 42 másodperc |
+| Teljes futási idő | kb. 1 perc 41 másodperc |
 
 ## 4. Eredmények
 
 | TC | Teszteset | Eredmény | Idő |
 |---|---|---|---|
-| TC-01 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 11,4 s |
-| TC-02 | Admin bejelentkezés | ✅ Sikeres | 5,1 s |
-| TC-02.1 | Vásárlói bejelentkezés | ✅ Sikeres | 4,3 s |
-| TC-03 | Kijelentkezés | ✅ Sikeres | 5,0 s |
-| TC-04 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 4,3 s |
-| TC-05 | Számla PDF letöltése | ✅ Sikeres | 5,8 s |
-| TC-06 | Kategória felvétele | ✅ Sikeres | 6,5 s |
-| TC-07 | Kategória módosítása | ✅ Sikeres | 7,7 s |
-| TC-08 | Kategória törlése | ❌ **Sikertelen** | 17,1 s |
-| TC-09 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 12,2 s |
-| TC-10 | Kategórialista megjelenítése | ✅ Sikeres | 4,9 s |
-| TC-11 | Adatkezelési nyilatkozat megnyitása | ✅ Sikeres | 3,0 s |
+| TC-01.1 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 8,1 s |
+| TC-01.2 | Sikertelen regisztráció már regisztrált e-mail címmel | ✅ Sikeres | 10,6 s |
+| TC-02.1 | Admin bejelentkezés | ✅ Sikeres | 4,0 s |
+| TC-02.2 | Vásárlói bejelentkezés | ✅ Sikeres | 3,9 s |
+| TC-02.3 | Sikertelen bejelentkezés nem létező fiókkal | ✅ Sikeres | 3,9 s |
+| TC-03 | Kijelentkezés | ✅ Sikeres | 5,3 s |
+| TC-04 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 3,4 s |
+| TC-05 | Számla PDF letöltése | ✅ Sikeres | 7,9 s |
+| TC-06 | Kategória felvétele | ✅ Sikeres | 4,8 s |
+| TC-07 | Kategória módosítása | ✅ Sikeres | 7,1 s |
+| TC-08 | Kategória törlése | ❌ **Sikertelen** | 16,5 s |
+| TC-09 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 10,3 s |
+| TC-10 | Kategórialista megjelenítése | ✅ Sikeres | 4,1 s |
+| TC-11 | Adatkezelési nyilatkozat megnyitása | ✅ Sikeres | 2,7 s |
+
+A negatív tesztesetek (TC-01.2, TC-02.3) akkor sikeresek, ha az oldal a hibás adatokat
+elutasítja: megjelenik a megfelelő hibaüzenet, és az oldal nem lép tovább.
 
 **Összesítés:**
 
 | Összes teszt | Sikeres | Sikertelen | Kihagyott | Sikerességi arány |
 |---|---|---|---|---|
-| 12 | 11 | 1 | 0 | **92%** |
+| 14 | 13 | 1 | 0 | **93%** |
 
 ## 5. Talált hibák
 
@@ -100,6 +107,13 @@ kategória még szerepel.
 - **Éles, közös demóoldalon futnak a tesztek.** Az oldalt mások is használják, és az adatbázisa
   időnként visszaáll. A tesztek ezért minden futáskor egyedi adatokat hoznak létre (egyedi
   e-mail cím, egyedi kategórianevek), így egymást és más felhasználókat nem zavarják.
+- **A közös vásárlói fiókot mások zárolhatják.** A tesztek a demóoldal nyilvános vásárlói
+  fiókját használják. Ha valaki más többször rossz jelszóval próbál belépni, az oldal
+  zárolja a fiókot („Account locked, too many failed attempts”), és ilyenkor a vásárlói
+  bejelentkezés (TC-02.2) és a számlaletöltés (TC-05) is elbukik. A tesztelés során ez
+  egyszer elő is fordult; a zárolás a demóoldal adatbázisának visszaállításával feloldódott.
+  A saját negatív teszt (TC-02.3) ezért szándékosan nem létező fiókkal próbálkozik, hogy
+  a tesztcsomag maga ne okozzon zárolást.
 - **A demóoldal tesztadatokat halmoz fel.** A felvett tesztkategóriák az oldalon maradnak,
   amíg az adatbázis vissza nem áll.
 - **A számlaletöltés teszt a demóoldal állapotától függően bukhat.** A PDF-et a szerver
@@ -111,8 +125,9 @@ kategória még szerepel.
 
 ## 7. Konklúzió és javaslatok
 
-1. **A tesztelt funkciók 92%-a hibátlanul működik**, a kritikus folyamatok (regisztráció,
-   belépés, vásárlói funkciók, adatfelvétel és -módosítás) rendben vannak.
+1. **A tesztelt funkciók 93%-a hibátlanul működik**, a kritikus folyamatok (regisztráció,
+   belépés, vásárlói funkciók, adatfelvétel és -módosítás) rendben vannak, és a hibás
+   adatokat az oldal helyesen elutasítja.
 2. **A rendszer használható, a H-01 hiba nem akadályozza a működést.** A törölt kategória
    kb. 2 percig még látszik a listában; ez félrevezető, de adatvesztést nem okoz.
 
