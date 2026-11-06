@@ -25,6 +25,8 @@ import utils.TestConfig;
  * <ul>
  *   <li>{@link #open()} – a tesztelt oldal kezdőlapjának megnyitása</li>
  *   <li>{@link #signIn(String, String)} – bejelentkezés a fejléc Sign in linkjéről</li>
+ *   <li>{@link #submitLogin(String, String)} – a bejelentkezési űrlap elküldése
+ *       az eredmény megvárása nélkül (sikertelen belépés teszteléséhez)</li>
  *   <li>{@link #openUserMenu()}, {@link #openAdminCategories()} – a felhasználói menü,
  *       illetve az admin Categories lista megnyitása</li>
  *   <li>{@link #find(By)} – elem keresése várakozás nélkül</li>
@@ -75,6 +77,24 @@ public class BasePage {
 	}
 
 	/**
+	 * Kitölti és elküldi a bejelentkezési űrlapot, de nem vár az eredményre.
+	 * Sikertelen bejelentkezés tesztelésére is használható; sikeres belépéshez
+	 * a {@link #signIn(String, String)} kell, amely az átirányítást is megvárja.
+	 *
+	 * @param email felhasználó e-mail címe
+	 * @param password felhasználó jelszava
+	 */
+	protected void submitLogin(String email, String password) {
+
+		// Frissen betöltött oldal még renderelhet, ezért várni kell a linkre
+		waitAndClick(signInButton);
+
+		type(emailField, email);
+		type(passwordField, password);
+		click(loginButton);
+	}
+
+	/**
 	 * Bejelentkezik a megadott adatokkal, és megvárja, hogy az oldal átirányítson
 	 * a login oldalról. Kijelentkezett állapotból, olyan oldalról kell hívni, ahol
 	 * a fejlécben látszik a Sign in link (pl. a kezdőoldalról).
@@ -84,12 +104,7 @@ public class BasePage {
 	 */
 	protected void signIn(String email, String password) {
 
-		// Frissen betöltött oldal még renderelhet, ezért várni kell a linkre
-		waitAndClick(signInButton);
-
-		type(emailField, email);
-		type(passwordField, password);
-		click(loginButton);
+		submitLogin(email, password);
 
 		// Az átirányítás teljes oldal-újratöltés: amíg le nem zajlik, a menü
 		// a régi oldalon is látszhat, és a rákattintás elveszne

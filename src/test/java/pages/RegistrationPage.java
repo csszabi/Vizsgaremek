@@ -23,6 +23,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  *   <li>{@link #register} – az űrlap kitöltése és elküldése</li>
  *   <li>{@link #isRegistrationSuccessful()} – a sikeres regisztráció ellenőrzése</li>
  *   <li>{@link #getRegistrationError()} – az oldal hibaüzenetének lekérdezése</li>
+ *   <li>{@link #waitForRegistrationError()} – a hibaüzenet megvárása sikertelen regisztrációnál</li>
  * </ul>
  *
  * <p><b>Az űrlap szabályai</b>:
@@ -63,7 +64,7 @@ public class RegistrationPage extends BasePage {
 	// A cím-lekérdezés közben megjelenő "töltés" jelzés
 	private By postcodeLookupSpinner = By.cssSelector("[role='status'].alert-info");
 
-	// Sikertelen regisztrációkor megjelenő hibaüzenet (pl. "Email is already in use.")
+	// Sikertelen regisztrációkor megjelenő hibaüzenet (pl. "A customer with this email address already exists.")
 	private By registerError = By.cssSelector("[data-test='register-error']");
 
 	/** Explicit várakozás (max. 10 mp) az ellenőrzésekhez és az oldalállapotokhoz. */
@@ -147,13 +148,28 @@ public class RegistrationPage extends BasePage {
 
 	/**
 	 * Visszaadja a regisztrációs űrlap alatt megjelenő hibaüzenetet
-	 * (pl. "Email is already in use."). Sikertelen regisztráció esetén a hiba okának
+	 * (pl. "A customer with this email address already exists."). Sikertelen regisztráció esetén a hiba okának
 	 * kiírására szolgál.
 	 *
 	 * @return a hibaüzenet szövege, vagy üres szöveg, ha nincs hibaüzenet
 	 */
 	public String getRegistrationError() {
 		return driver.findElements(registerError).isEmpty() ? "" : getText(registerError);
+	}
+
+	/**
+	 * Megvárja, hogy megjelenjen a regisztrációs űrlap hibaüzenete, és visszaadja a
+	 * szövegét. Sikertelen regisztráció (pl. már regisztrált e-mail cím) ellenőrzésére
+	 * szolgál; a {@link #register} után kell hívni.
+	 *
+	 * @return a hibaüzenet szövege, vagy üres szöveg, ha 10 mp-en belül nem jelent meg
+	 */
+	public String waitForRegistrationError() {
+		try {
+			return wait.until(ExpectedConditions.visibilityOfElementLocated(registerError)).getText();
+		} catch (org.openqa.selenium.TimeoutException e) {
+			return "";
+		}
 	}
 
 	

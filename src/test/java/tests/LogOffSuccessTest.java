@@ -21,7 +21,7 @@ import utils.TestConfig;
  * <p><b>Mit tesztel?:</b> egy bejelentkezett admin ki tud-e jelentkezni a felhasználói
  * menüből, és ezután a login oldalra kerül-e.
  *
- * <p><b>Miért jött létre?:</b> a bejelentkezés ({@link LogonSuccessTest}) párja; azt
+ * <p><b>Miért jött létre?:</b> a bejelentkezés ({@link LoginTest}) párja; azt
  * ellenőrzi, hogy a munkamenet valóban véget ér.
  *
  * <p><b>Előfeltételek:</b>
