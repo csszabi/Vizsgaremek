@@ -50,8 +50,8 @@ változik, csak egy helyen kell javítani.
 
 ## Tesztesetek
 
-A tesztosztályok az alábbi sorrendben futnak (`@Order`). A 10 osztályban összesen
-11 teszteset van; mindegyik TC azonosítót kapott, amely a tesztmetódus Javadocjában és
+A tesztosztályok az alábbi sorrendben futnak (`@Order`). A 11 osztályban összesen
+12 teszteset van; mindegyik TC azonosítót kapott, amely a tesztmetódus Javadocjában és
 a `@DisplayName`-ben (így az Eclipse JUnit nézetében és az Allure riportban) is látszik:
 
 | # | Tesztosztály | TC | Mit ellenőriz |
@@ -67,6 +67,7 @@ a `@DisplayName`-ben (így az Eclipse JUnit nézetében és az Allure riportban)
 | 8 | `DeleteDataTest` | TC-08 | Kategória törlése |
 | 9 | `RepeatedCategoryEntryTest` | TC-09 | Több kategória felvétele egymás után CSV fájlból (adatvezérelt) |
 | 10 | `CategoryListTest` | TC-10 | A kategórialista megjelenik, benne a Hand Tools kategóriával |
+| 11 | `PrivacyPolicyTest` | TC-11 | Az adatkezelési nyilatkozat (Privacy Policy) megnyílik a lábléc linkjéről |
 
 Minden teszteset részletes leírása (tesztfeltétel, előfeltételek, tesztlépések, elvárt
 eredmény) a tesztmetódus Javadocjában található.
@@ -82,11 +83,13 @@ A **`DeleteDataTest`** jelenleg szándékosan elbukik. A törlés sikeres (megje
 gyorsítótárból adja vissza a régi listát, amelyben a törölt kategória még szerepel.
 Ez az alkalmazás hibája, nem a teszté, ezért az ellenőrzés nincs megkerülve.
 
-### Nem automatizált teszteset
+### Adatkezelési nyilatkozat
 
-**Adatkezelési nyilatkozat használata** – ehhez a tesztesethez nem készült automatizált
-teszt, mert a tesztelt oldalon nincs ilyen lehetőség (nincs adatkezelési nyilatkozat,
-amelyet a felhasználó megtekinthetne vagy elfogadhatna).
+Az **„Adatkezelési nyilatkozat használata”** tesztesetet a `PrivacyPolicyTest` (TC-11) fedi
+le: a nyilatkozat (Privacy Policy) minden oldal láblécéből elérhető, és a teszt ellenőrzi,
+hogy megnyílik-e, és a nyilatkozat szövege jelenik-e meg. Elfogadandó nyilatkozat
+(pl. jelölőnégyzet a regisztrációnál) az oldalon nincs, ezért a teszt a nyilatkozat
+elérhetőségét és tartalmát vizsgálja.
 
 ## Futtatás helyben
 
