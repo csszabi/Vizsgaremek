@@ -1,0 +1,81 @@
+# Automatizált UI tesztek futtatása GitHub Actions-ben.
+#
+# Mikor fut: minden push és pull request után, valamint kézzel is indítható
+# (Actions fül → "UI tesztek" → Run workflow).
+#
+# Mit csinál:
+#   1. lefuttatja a teszteket headless Chrome-mal (a BaseTest a CI változóból ismeri fel),
+#   2. a futás összesítőjét kiírja a futás oldalára (JUnit riport),
+#   3. elkészíti az Allure riportot, és letölthető artifactként elmenti.
+#
+# Ha bármelyik teszt elbukik, a futás piros lesz, de a riportok ettől még elkészülnek.
+
+name: UI tesztek
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write   # a JUnit riport ezzel tud összesítőt írni a futáshoz
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Forráskód letöltése
+        uses: actions/checkout@v4
+
+      - name: Java 21 telepítése
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven   # a Maven függőségeket a futások között megőrzi
+
+      # A Chrome az ubuntu-latest gépen előre telepítve van,
+      # a hozzá illő ChromeDriver-t a WebDriverManager tölti le.
+
+      # Diagnosztika: eléri-e a GitHub gépe a tesztelt oldalt és az API-ját.
+      # Ha a válasz 403 vagy a cím "Just a moment...", a Cloudflare blokkolja a kérést.
+      - name: Tesztelt oldal elérhetőségének ellenőrzése
+        run: |
+          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+          for url in https://practicesoftwaretesting.com/ https://api.practicesoftwaretesting.com/products; do
+            echo "=== $url"
+            curl -s -A "$UA" -o page.html -D headers.txt -w "HTTP státusz: %{http_code}\n" "$url" || true
+            grep -i -E "^(server|cf-mitigated|cf-ray):" headers.txt || true
+            echo "Oldal címe: $(grep -o -i '<title>[^<]*</title>' page.html | head -1)"
+            head -c 300 page.html; echo; echo
+          done
+
+      # -Dslowmo=0: CI-ben nincs, aki nézze, ezért kikapcsoljuk a bemutató módú lassítást.
+      # -Dmaven.test.failure.ignore=true: bukott teszt esetén se álljon meg a build,
+      #   hogy a riportok elkészüljenek. A futást a JUnit riport lépés teszi pirossá.
+      - name: Tesztek futtatása
+        run: mvn -B clean test -Dslowmo=0 -Dmaven.test.failure.ignore=true
+
+      - name: JUnit riport (összesítő a futás oldalán)
+        if: always()
+        uses: mikepenz/action-junit-report@v5
+        with:
+          report_paths: target/surefire-reports/TEST-*.xml
+          detailed_summary: true
+          include_passed: true
+          fail_on_failure: true
+
+      - name: Allure riport készítése
+        if: always()
+        run: mvn -B allure:report
+
+      - name: Allure riport feltöltése
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+          retention-days: 14
