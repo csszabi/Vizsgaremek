@@ -2,7 +2,7 @@
 
 **Projekt:** Practice Software Testing (Toolshop) – automatizált UI tesztek
 **Tesztelt rendszer:** https://practicesoftwaretesting.com/ (Toolshop v5.0)
-**Futtatás időpontja:** 2026. november 6., 22:06
+**Futtatás időpontja:** 2026. november 10., 21:47
 **Készítette:** Csongár Szabolcs
 
 ---
@@ -50,26 +50,26 @@ a böngészőben, úgy, ahogy egy valódi felhasználó használná.
 | Operációs rendszer | Windows 11 |
 | Tesztelt környezet | éles demóoldal (practicesoftwaretesting.com) |
 | Eszközök | Java 21, Selenium WebDriver 4.51, JUnit 6.1, Allure riport |
-| Teljes futási idő | kb. 1 perc 41 másodperc |
+| Teljes futási idő | kb. 2 perc 12 másodperc (a tesztek futási ideje összesen) |
 
 ## 4. Eredmények
 
 | TC | Teszteset | Eredmény | Idő |
 |---|---|---|---|
-| TC-01.1 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 8,1 s |
-| TC-01.2 | Sikertelen regisztráció már regisztrált e-mail címmel | ✅ Sikeres | 10,6 s |
-| TC-02.1 | Admin bejelentkezés | ✅ Sikeres | 4,0 s |
-| TC-02.2 | Vásárlói bejelentkezés | ✅ Sikeres | 3,9 s |
-| TC-02.3 | Sikertelen bejelentkezés nem létező fiókkal | ✅ Sikeres | 3,9 s |
-| TC-03 | Kijelentkezés | ✅ Sikeres | 5,3 s |
-| TC-04 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 3,4 s |
-| TC-05 | Számla PDF letöltése | ✅ Sikeres | 7,9 s |
-| TC-06 | Kategória felvétele | ✅ Sikeres | 4,8 s |
-| TC-07 | Kategória módosítása | ✅ Sikeres | 7,1 s |
-| TC-08 | Kategória törlése | ❌ **Sikertelen** | 16,5 s |
-| TC-09 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 10,3 s |
-| TC-10 | Kategórialista megjelenítése | ✅ Sikeres | 4,1 s |
-| TC-11 | Adatkezelési nyilatkozat megnyitása | ✅ Sikeres | 2,7 s |
+| TC-01.1 | Sikeres regisztráció új felhasználóval | ✅ Sikeres | 9,1 s |
+| TC-01.2 | Sikertelen regisztráció már regisztrált e-mail címmel | ✅ Sikeres | 10,1 s |
+| TC-02.1 | Admin bejelentkezés | ✅ Sikeres | 5,1 s |
+| TC-02.2 | Vásárlói bejelentkezés | ✅ Sikeres | 5,1 s |
+| TC-02.3 | Sikertelen bejelentkezés nem létező fiókkal | ✅ Sikeres | 5,7 s |
+| TC-03 | Kijelentkezés | ✅ Sikeres | 7,1 s |
+| TC-04 | Terméklista lapozása (1–5. oldal) | ✅ Sikeres | 5,9 s |
+| TC-05 | Számla PDF letöltése | ✅ Sikeres | 9,7 s |
+| TC-06 | Kategória felvétele | ✅ Sikeres | 8,1 s |
+| TC-07 | Kategória módosítása | ✅ Sikeres | 10,2 s |
+| TC-08 | Kategória törlése | ❌ **Sikertelen** | 19,1 s |
+| TC-09 | 4 kategória felvétele egymás után CSV fájlból | ✅ Sikeres | 23,8 s |
+| TC-10 | Kategórialista megjelenítése | ✅ Sikeres | 7,9 s |
+| TC-11 | Adatkezelési nyilatkozat megnyitása | ✅ Sikeres | 4,4 s |
 
 A negatív tesztesetek (TC-01.2, TC-02.3) akkor sikeresek, ha az oldal a hibás adatokat
 elutasítja: megjelenik a megfelelő hibaüzenet, és az oldal nem lép tovább.
@@ -111,7 +111,7 @@ kategória még szerepel.
   fiókját használják. Ha valaki más többször rossz jelszóval próbál belépni, az oldal
   zárolja a fiókot („Account locked, too many failed attempts”), és ilyenkor a vásárlói
   bejelentkezés (TC-02.2) és a számlaletöltés (TC-05) is elbukik. A tesztelés során ez
-  egyszer elő is fordult; a zárolás a demóoldal adatbázisának visszaállításával feloldódott.
+  többször is előfordult; a zárolás a demóoldal adatbázisának visszaállításával mindig feloldódott.
   A saját negatív teszt (TC-02.3) ezért szándékosan nem létező fiókkal próbálkozik, hogy
   a tesztcsomag maga ne okozzon zárolást.
 - **A demóoldal tesztadatokat halmoz fel.** A felvett tesztkategóriák az oldalon maradnak,
