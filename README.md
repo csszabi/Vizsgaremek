@@ -56,7 +56,7 @@ src/test/allure/
 ├── environment.properties    az Allure riport környezeti adatai
 └── categories.json           a bukások csoportosítása az Allure riportban
 
-mvnw, mvnw.cmd                Maven Wrapper indítószkript (Linux/macOS, ill. Windows)
+mvnw, mvnw.cmd                Maven Wrapper indítószkriptek (Windowson a mvnw.cmd)
 .mvn/wrapper/                 a Wrapper beállításai (a használt Maven verzió)
 .github/workflows/            GitHub Actions workflow
 docs/                         vezetői tesztjelentés (Markdown és PDF)
@@ -145,7 +145,7 @@ tesztek hibája: a zárolást kívülről, más felhasználók hibás bejelentke
 Hogy feloldódott-e, egyetlen paranccsal ellenőrizhető:
 
 ```bash
-./mvnw test -Dtest=LoginTest
+.\mvnw.cmd test -Dtest=LoginTest
 ```
 
 Ha nem akarunk várni, a `utils/TestConfig` osztályban egy sorral át lehet állni a demóoldal
@@ -153,10 +153,20 @@ egy másik beépített vásárlói fiókjára (pl. `customer2@practicesoftwarete
 A saját negatív teszt (TC-02.3) szándékosan nem létező fiókot használ, így ezt a zárolást
 nem a tesztcsomag okozza.
 
+Az **admin fiókot** a zárolás nem érinti: a tesztelt alkalmazás forráskódja szerint a
+zárolás és a hibás próbálkozások számlálása csak a nem admin szerepkörű fiókokra
+vonatkozik. Az admin fiókot használó tesztek (TC-02.1, TC-03, TC-06–TC-10) ezért
+ilyen okból nem bukhatnak.
+
 ### Közös, éles demóoldal
 
 - Az oldal adatbázisa időnként visszaáll, és mások is használják; a tesztek ezért minden
   futáskor saját, egyedi adatokat hoznak létre.
+- Az admin fiók is közös: elvileg egy másik felhasználó adminként módosíthat olyan
+  adatot, amelyre a tesztek építenek (pl. átnevezi a „Hand Tools” kategóriát, amelyet
+  a TC-06, a TC-07, a TC-08 és a TC-10 használ, vagy a `categories.csv` valamelyik
+  szülőkategóriáját a TC-09-ből). Ez ritka, és a demóoldal adatbázisának rendszeres
+  visszaállítása helyrehozza; ilyenkor a teszt az érintett elem keresésénél bukik.
 - A **számlaletöltés (TC-05)** a demóoldal állapotától függően bukhat: a PDF-et a szerver
   a háttérben készíti, és nem minden számlához készül el. A teszt az első 5 számlát
   sorban megnézi, és az első letölthetőt tölti le; ha egyikhez sem készült el a PDF,
@@ -184,21 +194,21 @@ nem a tesztcsomag okozza.
 
 ### Parancssorból
 
-A projekt mappájában, a Maven Wrapperrel:
+A projekt mappájában, a Maven Wrapperrel (Windows, PowerShell vagy parancssor):
 
-| Rendszer | Parancs |
-|---|---|
-| Windows (PowerShell, cmd) | `.\mvnw.cmd clean test` |
-| Linux, macOS, Git Bash | `./mvnw clean test` |
+```bash
+.\mvnw.cmd clean test
+```
 
 Egyetlen tesztosztály:
 
 ```bash
-./mvnw test -Dtest=LoginTest
+.\mvnw.cmd test -Dtest=LoginTest
 ```
 
-A README további parancsai a `./mvnw` formát használják; Windowson helyette `.\mvnw.cmd`
-írandó. Ha a gépen telepítve van a Maven, a parancsok `mvn`-nel is működnek.
+Ha a gépen telepítve van a Maven, a parancsok `mvn`-nel is működnek (pl. `mvn clean test`).
+PowerShellben a pontot tartalmazó paramétereket (pl. `-Dmaven.test.failure.ignore=true`)
+idézőjelbe kell tenni, különben a PowerShell a pontnál kettévágja őket.
 
 ### Bemutató mód (lassítás)
 
@@ -207,7 +217,7 @@ lassítás, ilyenkor minden kattintás és gépelés előtt a megadott ideig (ez
 várnak, hogy a futás szemmel követhető legyen:
 
 ```bash
-./mvnw test -Dslowmo=800
+.\mvnw.cmd test -Dslowmo=800
 ```
 
 Eclipse-ből futtatva a lassítás a run configuration *Arguments → VM arguments* mezőjében
@@ -220,14 +230,14 @@ A tesztek futás közben a `target/allure-results` mappába írják az eredmény
 Ebből a riport:
 
 ```bash
-./mvnw allure:serve
+.\mvnw.cmd allure:serve
 ```
 
 Ez elkészíti a riportot és megnyitja a böngészőben. Csak a fájlok előállításához
 (böngésző nélkül):
 
 ```bash
-./mvnw allure:report
+.\mvnw.cmd allure:report
 ```
 
 Ilyenkor a riport a `target/site/allure-maven-plugin/index.html` fájlba kerül. Fájlból
@@ -243,7 +253,7 @@ Ha a riportot a bukott tesztekkel együtt szeretnéd egy lépésben elkészíten
 és a riport nem készül el. A teljes folyamat egy paranccsal:
 
 ```bash
-./mvnw clean test allure:report -Dmaven.test.failure.ignore=true
+.\mvnw.cmd clean test allure:report "-Dmaven.test.failure.ignore=true"
 ```
 
 ### Vezetői nézet az Allure riportban
