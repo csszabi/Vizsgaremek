@@ -11,6 +11,18 @@ automatikusan Allure riport készül. GitHub Actions workflow is tartozik a proj
 de ott a tesztelt oldal Cloudflare-védelme miatt a tesztek nem érik el az oldalt
 (részletek: [Cloudflare-védelem](#cloudflare-védelem-github-actions)).
 
+## A tesztelt alkalmazás
+
+| | |
+|---|---|
+| **Név** | Practice Software Testing – Toolshop (v5.0) |
+| **Elérhetőség** | https://practicesoftwaretesting.com/ |
+
+Az alkalmazás egy kifejezetten tesztelés gyakorlására készült, nyilvánosan elérhető demó
+webáruház, vásárlói és adminisztrátori felülettel. **Telepítést nem igényel:** a tesztek
+közvetlenül a fenti címen futó példányt használják, ezért elég egy böngésző és
+internetkapcsolat.
+
 ## Használt technológiák
 
 | Eszköz | Verzió | Szerepe |
