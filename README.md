@@ -59,7 +59,8 @@ src/test/allure/
 mvnw, mvnw.cmd                Maven Wrapper indítószkriptek (Windowson a mvnw.cmd)
 .mvn/wrapper/                 a Wrapper beállításai (a használt Maven verzió)
 .github/workflows/            GitHub Actions workflow
-docs/                         vezetői tesztjelentés (Markdown és PDF)
+docs/                         vezetői tesztjelentés (Markdown és PDF), generált Javadoc
+                              (javadoc/) és a GitHub Pages nyitóoldala (index.html)
 ```
 
 A projekt a **Page Object Model** mintát követi: a tesztek nem közvetlenül keresik az
@@ -92,7 +93,9 @@ nézetében és az Allure riportban) is látszik:
 | 11 | `PrivacyPolicyTest` | TC-11 | Az adatkezelési nyilatkozat (Privacy Policy) megnyílik a lábléc linkjéről |
 
 Minden teszteset részletes leírása (tesztfeltétel, előfeltételek, tesztlépések, elvárt
-eredmény) a tesztmetódus Javadocjában található.
+eredmény) a tesztmetódus Javadocjában található. A teljes Javadoc-dokumentáció
+böngészőben is megtekinthető (GitHub Pages):
+**https://csszabi.github.io/Vizsgaremek/javadoc/**
 
 Minden teszt önálló, nem függ más tesztek eredményétől. Az ütközések elkerülése
 érdekében a tesztek egyedi adatokat használnak (időbélyeget tartalmazó e-mail cím

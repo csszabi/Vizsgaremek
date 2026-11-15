@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vizsgaremek – automatizált UI tesztek</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Calibri, Arial, sans-serif;
+    line-height: 1.5;
+    background: #f6f8fa;
+    color: #1f2328;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; color: #0b3d6e; }
+  .sub { margin: 0 0 32px; color: #57606a; }
+  .card {
+    display: block;
+    background: #fff;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card:hover { border-color: #0b5cad; }
+  .card h2 { font-size: 1.15rem; margin: 0 0 4px; color: #0b5cad; }
+  .card p { margin: 0; color: #57606a; }
+  footer { margin-top: 32px; font-size: 0.9rem; color: #57606a; }
+  footer a { color: #0b5cad; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0d1117; color: #e6edf3; }
+    h1 { color: #79c0ff; }
+    .sub, .card p, footer { color: #9198a1; }
+    .card { background: #161b22; border-color: #30363d; }
+    .card:hover { border-color: #58a6ff; }
+    .card h2, footer a { color: #58a6ff; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Vizsgaremek – automatizált UI tesztek</h1>
+  <p class="sub">Selenium WebDriver + JUnit tesztek a Practice Software Testing (Toolshop)
+  demó webáruházhoz – Csongár Szabolcs</p>
+
+  <a class="card" href="javadoc/">
+    <h2>Javadoc-dokumentáció</h2>
+    <p>A tesztosztályok, a tesztesetek (TC-azonosítóval, tesztfeltétellel, előfeltételekkel,
+    tesztlépésekkel és elvárt eredménnyel) és a Page Object osztályok dokumentációja.</p>
+  </a>
+
+  <a class="card" href="Vezetoi_tesztjelentes.pdf">
+    <h2>Vezetői tesztjelentés (PDF)</h2>
+    <p>Összefoglaló a tesztelés céljáról, hatóköréről, eredményeiről, a talált hibáról
+    és a kockázatokról.</p>
+  </a>
+
+  <a class="card" href="https://github.com/csszabi/Vizsgaremek">
+    <h2>Forráskód és README</h2>
+    <p>A tesztek forráskódja, a futtatás módja és a projekt részletes leírása GitHubon.</p>
+  </a>
+
+  <footer>A tesztelt alkalmazás:
+    <a href="https://practicesoftwaretesting.com/">practicesoftwaretesting.com</a>
+  </footer>
+</main>
+</body>
+</html>
