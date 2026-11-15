@@ -1,5 +1,8 @@
 # Practice Software Testing – automatizált UI tesztek
 
+- **Forráskód (GitHub):** https://github.com/csszabi/Vizsgaremek
+- **Dokumentáció (Javadoc, vezetői jelentés):** https://csszabi.github.io/Vizsgaremek/
+
 Selenium WebDriver + JUnit alapú, automatizált felhasználói felület (UI) tesztek a
 [Practice Software Testing](https://practicesoftwaretesting.com/) (Toolshop) demó
 webáruházhoz. A projekt 11 tesztosztályban **14 tesztesetet** tartalmaz – pozitív és
